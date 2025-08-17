@@ -1,0 +1,118 @@
+.profile-container {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Cover Photo */
+.cover-photo {
+    position: relative;
+    height: 300px;
+    background: #f0f0f0;
+}
+
+.cover-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+/* Cover Photo Camera Button */
+.cover-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.3s;
+}
+.cover-btn:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+/* Profile Picture */
+.profile-pic {
+    position: absolute;
+    bottom: -60px;
+    left: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #fff;
+    width: 120px;
+    height: 120px;
+    background: #ddd;
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Profile Picture Camera Button */
+.profile-pic .camera-btn.small {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    padding: 5px;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.profile-pic .camera-btn.small:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+/* Cover Buttons */
+.cover-buttons {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+}
+.cover-buttons .btn {
+    margin-left: 5px;
+}
+
+/* Profile Info */
+.profile-info {
+    padding: 80px 20px 20px 20px; /* 80px for space under profile picture */
+    text-align: left;
+}
+
+.profile-info h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.badges {
+    margin: 10px 0;
+}
+
+.badge {
+    margin-right: 5px;
+}
+
+.profile-info p {
+    color: #555;
+}
+.profile-info-header h2 {
+    margin: 0;
+}
+
+.profile-action-buttons .btn {
+    font-size: 0.875rem;
+}
