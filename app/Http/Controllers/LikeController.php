@@ -2,33 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Like;
 use App\Models\Post;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Repositories\LikeRepositoryInterface;
 
 class LikeController extends Controller
 {
-    public function toggle(Post $post)
+    protected $likeRepo;
+
+    public function __construct(LikeRepositoryInterface $likeRepo)
     {
-        $like = Like::where('user_id', Auth::id())
-                    ->where('post_id', $post->id)
-                    ->first();
+        $this->likeRepo = $likeRepo;
+    }
 
-        if ($like) {
-            $like->delete();
-            $status = 'unliked';
-        } else {
-            Like::create([
-                'user_id' => Auth::id(),
-                'post_id' => $post->id
-            ]);
-            $status = 'liked';
-        }
-
-        return response()->json([
-            'status' => $status,
-            'likes_count' => $post->likes()->count()
-        ]);
+    public function like(Post $post)
+    {
+        $result = $this->likeRepo->toggleLike($post);
+        
+        return response()->json($result);
     }
 }

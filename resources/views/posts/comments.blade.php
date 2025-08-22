@@ -31,7 +31,10 @@
     $.ajax({
       url: `/posts/${postId}/comment`,
       type: 'POST',
-      data: {_token: '{{ csrf_token() }}', content: text},
+      data: {_token: '{{ csrf_token() }}',
+       content: text,
+        post_id: postId   
+      },
       success: function (res) {
         const html = `
         <div class="d-flex mb-2">

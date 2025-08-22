@@ -35,20 +35,20 @@ $(document).on('click', '.delete-post-btn', function () {
         type: "POST",
         data: {
             _method: "DELETE",
-            _token: "{{ csrf_token() }}"
+            _token: "{{ csrf_token() }}",
+            
         },
-        success: function (res) {
-            if (res.success) {
-                postCard.fadeOut(400, function () {
-                    $(this).remove();
-                });
-                notyf.success(res.message); // ✅ toast show
-            }
-        },
-        error: function (xhr) {
-            notyf.error("Failed to delete post. Please try again.");
-            console.error(xhr.responseText);
-        }
+       success: function (res) {
+    if (res.success) {
+        postCard.fadeOut(400, function () {
+            $(this).remove();
+        });
+        notyf.success(res.message);
+    } else {
+        notyf.error("Something went wrong.");
+    }
+}
+
     });
 });
 </script>

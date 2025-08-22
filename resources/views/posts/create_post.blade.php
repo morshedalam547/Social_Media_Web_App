@@ -69,7 +69,9 @@
         $('#postForm')[0].reset();
         $('#imagePreview').addClass('d-none');
         $('#postsContainer').prepend(res.html);
+   
       },
+      
       error: function(xhr){ alert('Failed to create post'); console.error(xhr.responseText); }
     });
   });

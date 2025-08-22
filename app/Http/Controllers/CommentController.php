@@ -2,35 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Comment;   
+use App\Http\Requests\CommentStoreRequest;
+use App\Repositories\CommentRepositoryInterface;
 
 class CommentController extends Controller
 {
-    public function store(Request $request)
+    protected $commentRepo;
+
+    public function __construct(CommentRepositoryInterface $commentRepo)
     {
-        $request->validate([
-            'content' => 'required|string',
-            'post_id' => 'required|exists:posts,id',
-        ]);
-
-        Comment::create([
-            'user_id' => auth()->id(),
-            'post_id' => $request->post_id,
-            'content' => $request->content,
-        ]);
-
-        return back();
+        $this->commentRepo = $commentRepo;
     }
 
-    public function destroy(Comment $comment)
+    public function store(CommentStoreRequest $request)
     {
-        if ($comment->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $validated = $request->validated();
+        $comment = $this->commentRepo->storeComment($validated);
 
-        $comment->delete();
-
-        return back();
+        return response()->json($comment);
     }
+
+
+
+    // public function destroy(Comment $comment)
+    // {
+    //     if ($comment->user_id !== auth()->id()) {
+    //         abort(403);
+    //     }
+
+    //     $comment->delete();
+
+    //     return back();
+    // }
 }
