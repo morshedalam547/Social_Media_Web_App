@@ -23,13 +23,21 @@ class PostController extends Controller
         return view('posts.dashboard', compact('user', 'posts'));
     }
 
-    public function store(PostStoreRequest $request)
-    {
-        $validated = $request->validated();
-        $post = $this->postRepo->storePost($validated, $request);
+public function store(PostStoreRequest $request)
+{
+    $validated = $request->validated();
 
-        return response()->json($post);
-    }
+ 
+    $post = $this->postRepo->storePost($validated, $request);
+
+    $html = view('posts.post_card', compact('post'))->render();
+
+    return response()->json([
+        'success' => true,
+        'html' => $html,
+    ]);
+}
+
 
 
 

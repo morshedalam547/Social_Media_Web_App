@@ -23,7 +23,6 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::middleware(['auth'])->group(function () {
     Route::get('/dashboardFb', [PostController::class, 'index'])->name('dashboard');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
@@ -36,7 +35,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
 
-});
 
 
 Route::post('/posts/{post}/comment', [CommentController::class, 'store'])->name('comments.store');
@@ -51,7 +49,7 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')
 
 
 
-Route::middleware('guest')->group(function () {
+
     // Forgot Password Form
     Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 
@@ -63,7 +61,6 @@ Route::middleware('guest')->group(function () {
 
     // Update Password
     Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
-});
 
 
 

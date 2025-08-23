@@ -26,8 +26,9 @@
         <button type="submit" class="btn btn-primary btn-sm">Post</button>
       </div>
     </form>
+      </div>
   </div>
-</div>
+
 
 @push('scripts')
 <script>
@@ -55,9 +56,9 @@
     removeImageBtn.addEventListener('click', function () { imageInput.value=''; if(imageTag) imageTag.src=''; imagePreview.classList.add('d-none'); });
   }
 
-  $('#postForm').on('submit', function(e) {
+   $('#postForm').submit(function (e) {
     e.preventDefault();
-    const formData = new FormData(this);
+   let formData = new FormData(this);
 
     $.ajax({
       url: "{{ route('posts.store') }}",
@@ -65,12 +66,12 @@
       data: formData,
       contentType: false,
       processData: false,
-      success: function(res) {
-        $('#postForm')[0].reset();
-        $('#imagePreview').addClass('d-none');
-        $('#postsContainer').prepend(res.html);
-   
-      },
+    success: function(res) {
+          $('#postForm')[0].reset();
+          $('#imagePreview').addClass('d-none');
+          $('#postsContainer').prepend(res.html);
+        },
+
       
       error: function(xhr){ alert('Failed to create post'); console.error(xhr.responseText); }
     });
