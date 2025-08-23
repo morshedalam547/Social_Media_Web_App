@@ -26,6 +26,14 @@ const notyf = new Notyf({
   position: { x: 'right', y: 'top' }
 });
 
+notyf.info = function (message) {
+    this.open({
+        type: 'info',
+        background: '#dd0a0aff', 
+        message: message
+    });
+};
+
 $(document).on('click', '.delete-post-btn', function () {
     let postId = $(this).data('post-id');
     let postCard = $(`.post-card[data-post-id="${postId}"]`);
@@ -36,20 +44,24 @@ $(document).on('click', '.delete-post-btn', function () {
         data: {
             _method: "DELETE",
             _token: "{{ csrf_token() }}",
-            
         },
-       success: function (res) {
-    if (res.success) {
-        postCard.fadeOut(400, function () {
-            $(this).remove();
-        });
-        notyf.success(res.message);
-    } else {
-        notyf.error("Something went wrong.");
-    }
-}
+        success: function (res) {
+            if (res.success) {
+                postCard.fadeOut(400, function () {
+                    $(this).remove();
+                });
 
+              
+                notyf.info(res.message || 'Profile deleted successfully.');
+            } else {
+                notyf.error("Something went wrong.");
+            }
+        },
+        error: function () {
+            notyf.error("Server error!");
+        }
     });
 });
 </script>
+
 @endpush 

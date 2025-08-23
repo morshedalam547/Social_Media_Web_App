@@ -29,6 +29,8 @@
       </div>
   </div>
 
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 
 @push('scripts')
 <script>
@@ -38,7 +40,16 @@
   const imagePreview = document.getElementById('imagePreview');
   const imageTag     = imagePreview?.querySelector('img');
   const removeImageBtn = document.getElementById('removeImage');
+  
 
+  
+  // 🔔 Notyf init
+  const notyf = new Notyf({
+    duration: 3000,
+    position: { x: 'right', y: 'top' }
+  });
+
+ 
   $('#selectImageBtn').on('click', () => $('#imageInput').click());
 
   if (imageInput) {
@@ -70,6 +81,7 @@
           $('#postForm')[0].reset();
           $('#imagePreview').addClass('d-none');
           $('#postsContainer').prepend(res.html);
+           notyf.success('Post created successfully!');
         },
 
       
