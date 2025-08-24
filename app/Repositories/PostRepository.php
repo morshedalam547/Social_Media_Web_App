@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Repositories;
 
@@ -10,35 +10,30 @@ class PostRepository implements PostRepositoryInterface
     public function getAllPosts()
     {
         return Post::with(['user', 'comments.user', 'likes'])
-                   ->latest()
-                   ->paginate(10);
+            ->latest()
+            ->paginate(10);
     }
 
-   public function storePost(array $data, Request $request)
+public function storePost(array $data)
 {
-    $post = new Post();
-    $post->user_id = auth()->id();
-    $post->content = $data['content'];
+    $newPost = new Post([
+        'user_id' => auth()->id(),
+        'content' => $data['content'],
+    ]);
 
-    if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('post_images', 'public');
-        $post->image = $imagePath;
+    if (!empty($data['image'])) {
+        $newPost->image = $data['image']->store('post_images', 'public');
     }
 
-    $post->save();
+    $newPost->save();
 
-
-    $post->load(['user', 'comments.user', 'likes']);
-
-    return $post; 
+    return $newPost->load(['user','comments.user','likes']);
 }
-
-
 
     public function deletePost(Post $post)
     {
         if ($post->user_id !== auth()->id()) {
-            abort(403); 
+            abort(403);
         }
 
         $post->delete();

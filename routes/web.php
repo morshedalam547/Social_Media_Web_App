@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -9,9 +10,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index']);
 
 
 Route::middleware('auth')->group(function () {
@@ -23,7 +22,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::get('/dashboardFb', [PostController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [PostController::class, 'index'])->name('dashboard');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
@@ -43,7 +42,6 @@ Route::post('/posts/{post}/comment', [CommentController::class, 'store'])->name(
 Route::post('/posts/{post}/like', [LikeController::class, 'like'])->name('posts.like');
 
 
-    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 
@@ -51,16 +49,16 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')
 
 
     // Forgot Password Form
-    Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+ Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 
     // Send Reset Link Email
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
-    // Reset Password Form
-    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+ // Reset Password Form
+Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
 
     // Update Password
-    Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
+ Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
 
 
 
@@ -69,4 +67,6 @@ Route::post('/profile/update-image', [ProfileController::class, 'updateImage'])-
 Route::post('/profile/update-cover', [ProfileController::class, 'updateCover'])->name('profile.updateCover');
 
 Route::post('/profile/update-image', [ProfileController::class, 'updateProfileImage'])->name('profile.updateProfileImage');
+
+
 require __DIR__.'/auth.php';

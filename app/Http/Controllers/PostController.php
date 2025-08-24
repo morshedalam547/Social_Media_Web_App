@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostStoreRequest;
 use App\Repositories\PostRepositoryInterface;
 
-use App\Models\Post; 
+use App\Models\Post;
 class PostController extends Controller
 {
     protected $postRepo;
@@ -23,34 +23,30 @@ class PostController extends Controller
         return view('posts.dashboard', compact('user', 'posts'));
     }
 
-public function store(PostStoreRequest $request)
-{
-    $validated = $request->validated();
+    //New post add function
+    public function store(PostStoreRequest $request)
+    {
 
- 
-    $post = $this->postRepo->storePost($validated, $request);
+        $post = $this->postRepo->storePost($request->validated());
 
-    $html = view('posts.post_card', compact('post'))->render();
+        $html = view('posts.post_card', compact('post'))->render();
 
-    return response()->json([
-        'success' => true,
-        'html' => $html,
-    ]);
-}
+        return response()->json([
+            'success' => true,
+            'html' => $html,
+        ]);
+    }
 
+    //Post Delete Function
+    public function destroy(Post $post)
+    {
+        $this->postRepo->deletePost($post);
 
-
-
-
-public function destroy(Post $post)
-{
-    $this->postRepo->deletePost($post);
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Post deleted successfully.'
-    ]);
-}
+        return response()->json([
+            'success' => true,
+            'message' => 'Post deleted successfully.'
+        ]);
+    }
 
 
 }

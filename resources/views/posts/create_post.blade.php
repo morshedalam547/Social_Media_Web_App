@@ -43,12 +43,6 @@
   
 
   
-  // 🔔 Notyf init
-  const notyf = new Notyf({
-    duration: 3000,
-    position: { x: 'right', y: 'top' }
-  });
-
  
   $('#selectImageBtn').on('click', () => $('#imageInput').click());
 

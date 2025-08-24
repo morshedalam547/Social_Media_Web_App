@@ -3,7 +3,7 @@
 
 @section('content')
 <main class="content">
-  <h2 class="my-3">Welcome, {{ auth()->user()->name }}</h2>
+  <h2 class="my-3">Welcome, {{ $user->name }}</h2>
 
   @include('posts.create_post')
 
