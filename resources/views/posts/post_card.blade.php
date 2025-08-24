@@ -1,16 +1,19 @@
 <div class="card mb-3 shadow-sm position-relative post-card" data-post-id="{{ $post->id }}">
   <div class="card-body">
-    {{-- post creator & timestamp --}}
+    {{-- User Post Image Icon show --}}
     <div class="d-flex align-items-center mb-2">
       <img
         src="{{ $post->user->profile_image ? asset('storage/' . $post->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($post->user->name) }}"
         alt="{{ $post->user->name }}" class="rounded-circle me-2" width="40" height="40">
-      <div>
+      
+      {{-- post TimeStamp --}}
+        <div>
         <strong>{{ $post->user->name }}</strong><br>
         <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small>
       </div>
     </div>
-
+ 
+    {{-- New Post create card --}}
     <p class="mb-2">{{ $post->content }}</p>
     @if($post->image)
     <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="img-fluid rounded mb-2"

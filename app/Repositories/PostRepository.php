@@ -16,18 +16,21 @@ class PostRepository implements PostRepositoryInterface
 
 public function storePost(array $data)
 {
+    // Post object create
     $newPost = new Post([
         'user_id' => auth()->id(),
         'content' => $data['content'],
     ]);
 
+    // Image thakle upload kora
     if (!empty($data['image'])) {
         $newPost->image = $data['image']->store('post_images', 'public');
     }
 
+    // Database e save kora
     $newPost->save();
 
-    return $newPost->load(['user','comments.user','likes']);
+    return $newPost;
 }
 
     public function deletePost(Post $post)
