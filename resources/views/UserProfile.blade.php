@@ -5,12 +5,10 @@
     <div class="card shadow-sm mb-4">
         {{-- Cover Photo --}}
         <div class="position-relative">
-            @if ($user->cover_image)
-                <img src="{{ asset('storage/' . $user->cover_image) }}" 
-                     alt="Cover Image" class="w-100 cover-img rounded-top">
-            @else
-                <img src="https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=1200&h=300&fit=crop" 
-                     alt="Default Cover" class="w-100 cover-img rounded-top">
+          @if (Auth::user()->cover_image)
+                <img src="{{ asset('storage/' . Auth::user()->cover_image) }}" class="w-100 cover-img rounded-top">
+                @else
+                <img src="default.jpg" class="w-100 cover-img rounded-top">
             @endif
 
             {{-- Cover Upload Button --}}
@@ -19,7 +17,7 @@
                 <i class="fas fa-camera"></i>
             </button>
 
-            <form id="coverUploadForm" action="{{ route('profile.updateCover') }}" method="POST" enctype="multipart/form-data" style="display:none;">
+            <form  action="{{ route('profile.updateCover') }}" method="POST" enctype="multipart/form-data" style="display:none;">
                 @csrf
                 <input type="file" name="cover_image" id="coverInput" accept="image/*" onchange="this.form.submit();">
             </form>
@@ -41,7 +39,7 @@
 
                 <form id="profileUploadForm" action="{{ route('profile.updateImage') }}" method="POST" enctype="multipart/form-data" style="display:none;">
                     @csrf
-                    <input type="file" name="profile_image" id="profileInput" accept="image/*" onchange="this.form.submit();">
+                    <input type="file" name="profile_photo" id="profileInput" accept="image/*" onchange="this.form.submit();">
                 </form>
             </div>
         </div>

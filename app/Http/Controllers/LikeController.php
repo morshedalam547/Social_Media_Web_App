@@ -1,8 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Http\Requests\LikeRequest;
 use App\Repositories\LikeRepositoryInterface;
 
 class LikeController extends Controller
@@ -14,14 +13,14 @@ class LikeController extends Controller
         $this->likeRepo = $likeRepo;
     }
 
-   public function like(Post $post)
-{
-    $result = $this->likeRepo->toggleLike([
-        'post_id' => $post->id,
-        'user_id' => auth()->id(),
-    ]);
-    
-    return response()->json($result);
+    public function like(LikeRequest $request)
+    {
+        $result = $this->likeRepo->toggleLike([
+            'post_id' => $request->post_id,   
+            'user_id' => auth()->id(),
+        ]);
+
+        return response()->json($result);
+    }
 }
 
-}

@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 use App\Repositories\ProfileRepositoryInterface;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Requests\CoverUpdateRequest;
@@ -33,27 +31,44 @@ class ProfileController extends Controller
 
     public function update(ProfileUpdateRequest $request)
     {
-        $this->profileRepo->updateProfile($request);
+        // $this->profileRepo->updateProfile($request->validated());
+
+        $this->profileRepo->updateProfile([
+
+            'name'         => $request->input('name'),
+            'email'        =>$request->input('email'),
+            'profile_image' =>$request->file('profile_image'),
+        ]);
 
         notifySuccess('Profile updated successfully.');
 
         return redirect()->route('profile.show');
     }
 
-    public function updateCover(CoverUpdateRequest $request)
-    {
-        $this->profileRepo->updateCover($request);
+public function updateCover(CoverUpdateRequest $request){
 
-        notifySuccess('Profile updated successfully.');
+        // $this->profileRepo->updateCover($request->validated());
 
-        return back();
-    }
+       $this->profileRepo->updateCover([
 
-    public function updateProfileImage(ProfileImageUpdateRequest $request)
-    {
-        $this->profileRepo->updateProfileImage($request);
+        'userCover' => $request->file('cover_image'), 
+    ]);
 
-        notifySuccess('Profile updated successfully.');
-        return back();
-    }
+     notifySuccess('cover Image updated successfully.');
+
+    return back();
 }
+    
+public function updateProfileImage(ProfileImageUpdateRequest $request)
+{
+    $this->profileRepo->updateProfileImage([
+
+        'profile_image' => $request->file('profile_photo'), 
+    ]);
+
+    notifySuccess('Profile Image updated successfully.');
+    return back();
+}
+
+}
+

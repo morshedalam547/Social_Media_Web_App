@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,51 +12,75 @@ class ProfileRepository implements ProfileRepositoryInterface
         return Auth::user();
     }
 
-    public function updateProfile(Request $request)
-    {
-        $user = Auth::user();
+  public function updateProfile(array $data)
+{
+    // Logged-in user
+    $user = Auth::user();
+
+    // Update basic fields
+        $user->fill([
+                'name' => $data['name'],
+                'email' => $data['email'],
+        ]);
+
+    // Delete old profile image if exists
+    if (!empty($data['profile_image'])) {
+        Storage::disk('public')->delete($user->profile_image);
+    }
+
+    // Store new profile image
+    if (!empty($data['profile_image'])) {
+        $user->profile_image = $data['profile_image']->store('profile_images', 'public');
+    }
+    // Save  to database
+    $user->save();
+    
+    return $user->fresh();
+}
+
+
+public function updateCover(array $data)
+{
+    $user = Auth::user();
+
+    // Delete old cover image if exists
+    if ($user->cover_image && Storage::disk('public')->exists($user->cover_image)) {
+        Storage::disk('public')->delete($user->cover_image);
+    }
+
+    // Store new cover image
+    if (isset($data['userCover'])) {
+        $user->cover_image = $data['userCover']->store('cover_images', 'public');
+       
+    }
+    $user->save();
+    return $user;
+}
+
+public function updateProfileImage(array $data)
+{
+
+      $user = Auth::user();
+   
+      //old image delete
+        if (!empty($data['profile_image'])) {
+            Storage::disk('public')->delete($user->profile_image ?? '');
+
+            // new Image Save
+            $user->profile_image = $data['profile_image']->store('profile_images', 'public');
+            $user->save();
+        }
+
+        return $user;
+
+
+
+    }
+  }
 
    
-        $user->name = $request->name;
-        $user->email = $request->email;
 
-             if ($request->hasFile('profile_image')) {
-            if ($user->profile_image && Storage::disk('public')->exists($user->profile_image)) {
-                Storage::disk('public')->delete($user->profile_image);
-            }
-            $user->profile_image = $request->file('profile_image')->store('profile_images', 'public');
-        }
 
-        $user->save();
 
-        return $user;
-    }
 
-    public function updateCover(Request $request)
-    {
-        $user = Auth::user();
 
-        if ($user->cover_image && Storage::disk('public')->exists($user->cover_image)) {
-            Storage::disk('public')->delete($user->cover_image);
-        }
-
-        $user->cover_image = $request->file('cover_image')->store('cover_images', 'public');
-        $user->save();
-
-        return $user;
-    }
-
-    public function updateProfileImage(Request $request)
-    {
-        $user = Auth::user();
-
-        if ($user->profile_image && Storage::disk('public')->exists($user->profile_image)) {
-            Storage::disk('public')->delete($user->profile_image);
-        }
-
-        $user->profile_image = $request->file('profile_image')->store('profile_images', 'public');
-        $user->save();
-
-        return $user;
-    }
-}

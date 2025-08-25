@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'cover_image',
     ];
 public function posts() { return $this->hasMany(Post::class); }
 public function comments() { return $this->hasMany(Comment::class); }
