@@ -2,18 +2,23 @@
 
 namespace App\Repositories;
 
+use App\Models\Like;
 use App\Models\Post;
 
-class LikeRepository implements \App\Repositories\LikeRepositoryInterface
+class LikeRepository implements LikeRepositoryInterface
 {
-    public function toggleLike(Post $post)
+    public function toggleLike(array $data)
     {
-        $user = auth()->user();
+        $post = Post::find($data['post_id']);
+        $userId = $data['user_id'];
 
-        $like = $post->likes()->where('user_id', $user->id)->first();
+        if (!$post) {
+            return ['status' => 'error', 'message' => 'Post not found'];
+        }
+
+        $like = $post->likes()->where('user_id', $userId)->first();
 
         if ($like) {
-            // User already liked → unlike
             $like->delete();
             return [
                 'status' => 'unliked',
@@ -21,8 +26,8 @@ class LikeRepository implements \App\Repositories\LikeRepositoryInterface
             ];
         }
 
-        // User hasn't liked yet → create like
-        $post->likes()->create(['user_id' => $user->id]);
+        $post->likes()->create(['user_id' => $userId]);
+
         return [
             'status' => 'liked',
             'likes_count' => $post->likes()->count(),

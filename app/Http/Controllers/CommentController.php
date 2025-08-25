@@ -16,8 +16,12 @@ class CommentController extends Controller
 
     public function store(CommentStoreRequest $request)
     {
-        $validated = $request->validated();
-        $comment = $this->commentRepo->storeComment($validated);
+        // $comment = $this->commentRepo->storeComment($request->validated());
+           $comment = $this->commentRepo->storeComment([
+        'post_id' => $request->input('post_id'),
+        'user_id' => auth()->id(),
+        'content' => $request->input('content'),
+    ]);
 
         return response()->json($comment);
     }

@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use App\Http\Controllers\Controller;
 
 class EmailVerificationPromptController extends Controller
 {
     /**
-     * Display the email verification prompt.
+     * Handle the incoming request.
+     *
+     * এই controller টা invokable, তাই __invoke() method থাকতে হবে।
      */
-    public function __invoke(Request $request): RedirectResponse|View
+    public function __invoke(Request $request)
     {
-        return $request->user()->hasVerifiedEmail()
-                    ? redirect()->intended(route('dashboard', absolute: false))
-                    : view('auth.verify-email');
+        // যদি user already verified থাকে → home এ redirect করো
+        if ($request->user()->hasVerifiedEmail()) {
+            return redirect()->intended('/');
+        }
+
+        // নাহলে verify-email.blade.php view দেখাও
+        return view('auth.verify-email');
     }
 }

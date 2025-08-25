@@ -27,7 +27,13 @@ class PostController extends Controller
     public function store(PostStoreRequest $request)
     {
 
-        $post = $this->postRepo->storePost($request->validated());
+        // $post = $this->postRepo->storePost($request->validated());
+
+        $post = $this->postRepo->storePost([
+        'user_id' => auth()->id(),          
+        'content' => $request->input('content'),
+        'image'   => $request->file('image') ?? null,
+    ]);
 
         $html = view('posts.post_card', compact('post'))->render();
 
@@ -36,6 +42,8 @@ class PostController extends Controller
             'html' => $html,
         ]);
     }
+
+
 
     //Post Delete Function
     public function destroy(Post $post)

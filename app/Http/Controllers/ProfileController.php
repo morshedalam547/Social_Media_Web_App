@@ -35,10 +35,7 @@ class ProfileController extends Controller
     {
         $this->profileRepo->updateProfile($request);
 
-        notyf()->position('x', 'right')
-        ->position('y', 'top')
-        ->duration(3000)
-        ->success('Profile updated successfully.');
+        notifySuccess('Profile updated successfully.');
 
         return redirect()->route('profile.show');
     }
@@ -47,8 +44,7 @@ class ProfileController extends Controller
     {
         $this->profileRepo->updateCover($request);
 
-        notyf()->position('x', 'right')->position('y', 'top')
-               ->duration(3000)->success('Cover image updated successfully.');
+        notifySuccess('Profile updated successfully.');
 
         return back();
     }
@@ -57,9 +53,7 @@ class ProfileController extends Controller
     {
         $this->profileRepo->updateProfileImage($request);
 
-        notyf()->position('x', 'right')->position('y', 'top')
-               ->duration(3000)->success('Profile image updated successfully.');
-
+        notifySuccess('Profile updated successfully.');
         return back();
     }
 }

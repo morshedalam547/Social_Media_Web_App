@@ -9,12 +9,12 @@
       {{-- post TimeStamp --}}
         <div>
         <strong>{{ $post->user->name }}</strong><br>
-        <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small>
+        <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small> <br> <br>
       </div>
     </div>
  
     {{-- New Post create card --}}
-    <p class="mb-2">{{ $post->content }}</p>
+    <strong><p class="mb-2">{{ $post->content }}</p></strong> <br>
     @if($post->image)
     <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="img-fluid rounded mb-2"
       style="max-height:300px;">

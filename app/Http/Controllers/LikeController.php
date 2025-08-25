@@ -14,10 +14,14 @@ class LikeController extends Controller
         $this->likeRepo = $likeRepo;
     }
 
-    public function like(Post $post)
-    {
-        $result = $this->likeRepo->toggleLike($post);
-        
-        return response()->json($result);
-    }
+   public function like(Post $post)
+{
+    $result = $this->likeRepo->toggleLike([
+        'post_id' => $post->id,
+        'user_id' => auth()->id(),
+    ]);
+    
+    return response()->json($result);
+}
+
 }

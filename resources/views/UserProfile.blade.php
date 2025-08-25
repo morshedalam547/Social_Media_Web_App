@@ -1,4 +1,3 @@
-
 <div class="container mt-5">
 
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
@@ -40,7 +39,7 @@
                     <i class="fas fa-camera"></i>
                 </button>
 
-                <form id="profileUploadForm" action="{{ route('profile.updateProfileImage') }}" method="POST" enctype="multipart/form-data" style="display:none;">
+                <form id="profileUploadForm" action="{{ route('profile.updateImage') }}" method="POST" enctype="multipart/form-data" style="display:none;">
                     @csrf
                     <input type="file" name="profile_image" id="profileInput" accept="image/*" onchange="this.form.submit();">
                 </form>
@@ -53,7 +52,7 @@
                 <h2 class="ms-5">{{ $user->name }}</h2>
                 <div>
                     <a href="{{ route('profile.edit') }}" class="btn btn-outline-secondary btn-sm me-2">Edit Profile</a>
-                    <button class="btn btn-primary btn-sm">Share Profile</button>
+                  
                 </div>
             </div>
 

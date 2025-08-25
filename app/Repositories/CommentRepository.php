@@ -15,13 +15,16 @@ class CommentRepository implements CommentRepositoryInterface
         ]);
 
         $post = $comment->post; 
+        $user =$comment->user;
+
+        
 
         return [
             'content' => $comment->content,
-            'user_name' => $comment->user->name,
-            'user_image' => $comment->user->profile_image 
-                ? asset('storage/' . $comment->user->profile_image) 
-                : 'https://ui-avatars.com/api/?name=' . urlencode($comment->user->name),
+            'user_name' => $user->name,
+            'user_image' => $user->profile_image 
+                ? asset('storage/' . $user->profile_image) 
+                : 'https://ui-avatars.com/api/?name=' . urlencode($user->name),
             'created_at' => $comment->created_at->diffForHumans(),
             'comments_count' => $post->comments()->count(),
         ];

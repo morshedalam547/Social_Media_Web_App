@@ -6,5 +6,5 @@ use App\Models\Post;
 
 interface LikeRepositoryInterface
 {
-    public function toggleLike(Post $post);
+    public function toggleLike(array $data);
 }
