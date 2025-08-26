@@ -61,7 +61,7 @@
           <!-- Login Form using Laravel route -->
           <form method="POST" action="{{ route('login') }}" id="login-form">
             @csrf
-            <input type="text" name="login" class="form-control mb-3" @error('login') is-invalid @enderror placeholder="Email address or phone number"
+            <input type="text" name="login" class="form-control mb-3" @error('login') is-invalid @enderror placeholder="Email or Name"
               required />
             <input type="password" name="password" class="form-control mb-3" placeholder="Password" required />
             <button type="submit" class="btn btn-primary w-100">Log In</button>

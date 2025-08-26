@@ -71,23 +71,21 @@
                 alt="Social Media logo" height="50">
         </a>
 
+
         <h5 class="mt-3 mb-4">Log in to Social Media</h5>
+
 
         {{-- Login Form --}}
         <form method="POST" action="{{ route('userLogin') }}" id="login-form" novalidate>
             @csrf
 
-            <!-- Name OR Email -->
-            <input type="text" name="login" 
-                class="form-control mb-3 @error('login') is-invalid @enderror"
-                placeholder="Name or Email" value="{{ old('login') }}" required autofocus>
+            <input type="text" name="login" class="form-control mb-3 @error('login') is-invalid @enderror"
+                placeholder="Email address or phone number" value="{{ old('login') }}" required autofocus>
             @error('login')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
 
-            <!-- Password -->
-            <input type="password" name="password" 
-                class="form-control mb-3 @error('password') is-invalid @enderror"
+            <input type="password" name="password" class="form-control mb-3 @error('password') is-invalid @enderror"
                 placeholder="Password" required>
             @error('password')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -106,6 +104,7 @@
             </button>
         </form>
 
+
         <form method="POST" action="{{ route('register') }}" id="register-form" style="display:none;">
             @csrf
 
@@ -122,4 +121,5 @@
         }
     </script>
 </body>
+
 </html>
