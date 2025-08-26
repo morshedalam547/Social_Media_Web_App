@@ -9,7 +9,17 @@ class ProfileRepository implements ProfileRepositoryInterface
 {
     public function getUser()
     {
-        return Auth::user();
+        $user = Auth::user();
+
+        // Eager load posts with likes and comment authors
+        $user->load([
+            'posts' => function($query) {
+                $query->with(['likes', 'comments.user'])
+                      ->latest();
+            }
+        ]);
+
+        return $user;
     }
 
   public function updateProfile(array $data)
@@ -37,7 +47,6 @@ class ProfileRepository implements ProfileRepositoryInterface
     
     return $user->fresh();
 }
-
 
 public function updateCover(array $data)
 {
@@ -84,3 +93,11 @@ public function updateProfileImage(array $data)
 
 
 
+//   public function getUser()
+//     {
+//         $user = Auth::user();
+
+     
+
+//         return $user;
+//     }

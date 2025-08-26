@@ -33,11 +33,9 @@ Route::prefix('posts')->name('posts.')->group(function () {
     Route::post('/', [PostController::class, 'store'])->name('store');
     Route::get('/{post}', [PostController::class, 'show'])->name('show');
     Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
-    // Route::post('/{post}/like', [LikeController::class, 'like'])->name('like');
+    Route::post('/like', [LikeController::class, 'like'])->name('like');
     Route::post('/{post}/comment', [CommentController::class, 'store'])->name('comment.store');
-
     });
-Route::post('posts/like', [LikeController::class, 'like'])->name('posts.like');
 
 //Password Routes
 Route::prefix('password')->name('password.')->group(function () {

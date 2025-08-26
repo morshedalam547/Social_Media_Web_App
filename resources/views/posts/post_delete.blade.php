@@ -15,24 +15,11 @@
 </div>
 @endif 
 
-
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 
 <script>
-const notyf = new Notyf({
-  duration: 3000,
-  position: { x: 'right', y: 'top' }
-});
-
-notyf.info = function (message) {
-    this.open({
-        type: 'info',
-        background: '#dd0a0aff', 
-        message: message
-    });
-};
 
 $(document).on('click', '.delete-post-btn', function () {
     let postId = $(this).data('post-id');
@@ -51,15 +38,13 @@ $(document).on('click', '.delete-post-btn', function () {
                     $(this).remove();
                 });
 
-              
-                notyf.info(res.message || 'Profile deleted successfully.');
+                notyf.info(res.message);
+
             } else {
                 notyf.error("Something went wrong.");
             }
         },
-        error: function () {
-            notyf.error("Server error!");
-        }
+       
     });
 });
 </script>

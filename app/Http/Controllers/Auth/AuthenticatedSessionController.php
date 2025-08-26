@@ -27,11 +27,9 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-          notyf()
-            ->position('x', 'right')
-            ->position('y', 'top')
-            ->duration(3000) // 3 seconds
-            ->success('Login Successfully.');
+         
+        notifySuccess('Login successfully.');
+
             
 
         return redirect()->intended(route('dashboard', absolute: false));
@@ -48,13 +46,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        notyf()
-            ->position('x', 'right')
-            ->position('y', 'top')
-            ->duration(3000) // 2 seconds
-            ->warning('Logout Successfully.');
+       notifyWarning('Logout Successfully.');
 
-return redirect('/');
+        return redirect('/');
 
     }
 }

@@ -18,7 +18,7 @@ class PostController extends Controller
     {
         $user = auth()->user();
         $posts = $this->postRepo->getAllPosts();
-
+     
         return view('posts.dashboard', compact('user', 'posts'));
     }
 
@@ -39,12 +39,13 @@ class PostController extends Controller
         return response()->json([
             'success' => true,
             'html' => $html,
+            'message'=> 'post create Successfully',
         ]);
     }
 
 
 
-    //Post Delete Function
+  //Post Delete Function
     public function destroy(Post $post)
     {
         $this->postRepo->deletePost($post);
@@ -54,6 +55,5 @@ class PostController extends Controller
             'message' => 'Post deleted successfully.'
         ]);
     }
-
 
 }

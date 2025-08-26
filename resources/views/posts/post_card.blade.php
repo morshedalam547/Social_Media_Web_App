@@ -1,25 +1,30 @@
+
 <div class="card mb-3 shadow-sm position-relative post-card" data-post-id="{{ $post->id }}">
+  
   <div class="card-body">
+
     {{-- User Post Image Icon show --}}
     <div class="d-flex align-items-center mb-2">
       <img
         src="{{ $post->user->profile_image ? asset('storage/' . $post->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($post->user->name) }}"
         alt="{{ $post->user->name }}" class="rounded-circle me-2" width="40" height="40">
-      
+
       {{-- post TimeStamp --}}
-        <div>
+      <div>
         <strong>{{ $post->user->name }}</strong><br>
         <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small> <br> <br>
       </div>
     </div>
- 
-    {{-- New Post create card --}}
-    <strong><p class="mb-2">{{ $post->content }}</p></strong> <br>
-    @if($post->image)
-    <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="img-fluid rounded mb-2"
-      style="max-height:300px;">
-  @endif
 
+    {{-- New Post create card --}}
+    <strong>
+      <p class="mb-2">{{ $post->content }}</p>
+    </strong> <br>
+    @if($post->image)
+      <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="img-fluid rounded mb-2"
+        style="max-height:300px;">
+    @endif
+ 
     {{-- Like Button --}}
     <div class="d-flex justify-content-around border-top pt-2 mt-2 align-items-center">
       <button class="btn btn-link text-muted like-btn" data-post-id="{{ $post->id }}">
@@ -65,17 +70,17 @@
     <div class="comments-section mt-3 d-none" id="commentsSection{{ $post->id }}">
       <div class="comments-list mb-3">
         @foreach($post->comments as $comment)
-      <div class="d-flex mb-2">
-        <img
-        src="{{ $comment->user->profile_image ? asset('storage/' . $comment->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($comment->user->name) }}"
-        alt="{{ $comment->user->name }}" class="rounded-circle me-2" width="32" height="32">
-        <div>
-        <strong>{{ $comment->user->name }}</strong>
-        <p class="mb-0">{{ $comment->content }}</p>
-        <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
-        </div>
-      </div>
-    @endforeach
+          <div class="d-flex mb-2">
+            <img
+              src="{{ $comment->user->profile_image ? asset('storage/' . $comment->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($comment->user->name) }}"
+              alt="{{ $comment->user->name }}" class="rounded-circle me-2" width="32" height="32">
+            <div>
+              <strong>{{ $comment->user->name }}</strong>
+              <p class="mb-0">{{ $comment->content }}</p>
+              <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+            </div>
+          </div>
+        @endforeach
       </div>
       <form class="add-comment-form" data-post-id="{{ $post->id }}">
         @csrf

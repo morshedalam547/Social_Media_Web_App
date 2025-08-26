@@ -104,10 +104,10 @@
             </button>
         </form>
 
-    
+
         <form method="POST" action="{{ route('register') }}" id="register-form" style="display:none;">
             @csrf
-         
+
         </form>
     </div>
 

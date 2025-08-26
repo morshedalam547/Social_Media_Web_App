@@ -14,10 +14,13 @@ class CommentController extends Controller
         $this->commentRepo = $commentRepo;
     }
 
+    //add Comment
     public function store(CommentStoreRequest $request)
     {
         // $comment = $this->commentRepo->storeComment($request->validated());
-           $comment = $this->commentRepo->storeComment([
+
+         $comment = $this->commentRepo->storeComment([
+            
         'post_id' => $request->input('post_id'),
         'user_id' => auth()->id(),
         'content' => $request->input('content'),

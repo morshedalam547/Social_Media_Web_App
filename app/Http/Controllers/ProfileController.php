@@ -14,14 +14,17 @@ class ProfileController extends Controller
     {
         $this->profileRepo = $profileRepo;
     }
-
-    public function show()
+        public function show()
     {
+      // Repository থেকে user + posts fetch
         $user = $this->profileRepo->getUser();
-        $posts = $user->posts()->with(['likes', 'comments.user'])->latest()->get();
 
+        $posts = $user->posts;
+
+        // Blade  pass
         return view('UserProfile', compact('user', 'posts'));
     }
+
 
     public function edit()
     {
@@ -29,6 +32,7 @@ class ProfileController extends Controller
         return view('profile.edit', compact('user'));
     }
 
+    
     public function update(ProfileUpdateRequest $request)
     {
         // $this->profileRepo->updateProfile($request->validated());
@@ -72,3 +76,13 @@ public function updateProfileImage(ProfileImageUpdateRequest $request)
 
 }
 
+
+
+    // public function show()
+    // {
+    //     $user = $this->profileRepo->getUser();
+    //     $posts = $user->posts()->with(['likes', 'comments.user'])->latest()->get();
+
+    //     return view('UserProfile', compact('user', 'posts'));
+    
+    // }
