@@ -4,7 +4,7 @@
       @csrf
       <div class="d-flex align-items-start mb-3">
         <img
-          src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
+          src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) }}"
           alt="Your avatar" class="rounded-circle me-3" width="40" height="40">
         <textarea name="content" class="form-control" rows="2" placeholder="What's on your mind?" required></textarea>
       </div>

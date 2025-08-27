@@ -5,8 +5,8 @@
     <div class="card shadow-sm mb-4">
         {{-- Cover Photo --}}
         <div class="position-relative">
-          @if (Auth::user()->cover_image)
-                <img src="{{ asset('storage/' . Auth::user()->cover_image) }}" class="w-100 cover-img rounded-top">
+          @if ($user->cover_image)
+                <img src="{{ asset('storage/' . $user->cover_image) }}" class="w-100 cover-img rounded-top">
                 @else
                 <img src="default.jpg" class="w-100 cover-img rounded-top">
             @endif

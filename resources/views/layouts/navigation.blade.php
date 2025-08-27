@@ -13,14 +13,14 @@
         <li class="nav-item dropdown bg-success:hover">
           <a class="nav-link dropdown-toggle d-flex align-items-center text-primary" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
             <img 
-              src="{{ Auth::user()->profile_image 
-                      ? asset('storage/' . Auth::user()->profile_image) 
+              src="{{$user->profile_image 
+                      ? asset('storage/' .$user->profile_image) 
                       : asset('default-avatar.png') }}" 
               alt="Profile" 
               class="rounded-circle me-2"
               width="30" 
               height="30">
-            {{ Auth::user()->name }}
+            {{$user->name }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="{{ route('profile.show') }}">My Profile</a></li>
