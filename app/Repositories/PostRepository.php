@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
 class PostRepository implements PostRepositoryInterface
 {
 
-
-
     public function getAllPosts()
     {
         return Post::with(['user', 'comments.user', 'likes'])
@@ -17,29 +15,20 @@ class PostRepository implements PostRepositoryInterface
             ->paginate(10);
     }
 
-
-
-
+//New Post Create
 public function storePost(array $data)
 {
-    // 1. নতুন Post model বানানো হলো array দিয়ে
+    //New post Model make array base
     $newPost = new Post($data);
 
-    // 2. যদি image থাকে → upload করে model এর image field এ সেট করা হচ্ছে
     if (!empty($data['image'])) {
         $newPost->image = $data['image']->store('post_images', 'public');
     }
 
-    // 3. এখন এই Post model টাকে DB তে save করা হলো
     $newPost->save();
 
-    // 4. fresh() মানে DB থেকে নতুন করে Model টা রিলোড করা
     return $newPost->fresh();
 }
-
-
-
-
 
     public function deletePost(Post $post)
     {

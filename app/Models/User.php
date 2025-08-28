@@ -50,16 +50,5 @@ public function comments() { return $this->hasMany(Comment::class); }
     }
 
 
-    // Requests I sent
-public function sentRequests()
-{
-    return $this->hasMany(Friendship::class, 'requester_id');
-}
-
-// Requests I received
-public function receivedRequests()
-{
-    return $this->hasMany(Friendship::class, 'receiver_id');
-}
 
 }

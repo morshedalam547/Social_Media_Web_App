@@ -1,4 +1,3 @@
-{{-- post_card.blade.php --}}
 <div class="card mb-3 shadow-sm position-relative post-card" data-post-id="{{ $newPost->id }}"> 
   <div class="card-body">
 
@@ -8,21 +7,17 @@
         src="{{ $newPost->user->profile_image ? asset('storage/' . $newPost->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($newPost->user->name) }}"
         alt="{{ $newPost->user->name }}" class="rounded-circle me-2" width="40" height="40">
 
-      {{-- post TimeStamp --}}
       <div>
         <strong>{{ $newPost->user->name }}</strong><br>
-        <small class="text-muted">{{ $newPost->created_at->diffForHumans() }}</small> <br> <br>
+        <small class="text-muted">{{ $newPost->created_at->diffForHumans() }}</small> <br><br>
       </div>
     </div>
 
     {{-- Post Content --}}
-   
-      <p class="mb-2">{{ $newPost->content }}</p>
-   <br>
+    <p class="mb-2">{{ $newPost->content }}</p><br>
 
     @if($newPost->image)
-      <img src="{{ asset('storage/' . $newPost->image) }}" alt="Post Image" class="img-fluid rounded mb-2"
-        style="max-height:300px;">
+      <img src="{{ asset('storage/' . $newPost->image) }}" alt="Post Image" class="img-fluid rounded mb-2" style="max-height:300px;">
     @endif
 
     {{-- Like & Comment & Share --}}
@@ -36,11 +31,9 @@
       </button>
 
       <div class="dropdown">
-        <button class="btn btn-link text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown"
-          style="text-decoration: none;">
+        <button class="btn btn-link text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown">
           <i class="fas fa-share me-1"></i> Share
         </button>
-
         <ul class="dropdown-menu">
           <li><a class="dropdown-item share-item" data-platform="facebook" data-post-id="{{ $newPost->id }}" href="#">Facebook</a></li>
           <li><a class="dropdown-item share-item" data-platform="twitter" data-post-id="{{ $newPost->id }}" href="#">Twitter</a></li>
@@ -52,17 +45,8 @@
     {{-- Comments Section --}}
     <div class="comments-section mt-3 d-none" id="commentsSection{{ $newPost->id }}">
       <div class="comments-list mb-3">
-        @foreach($newPost->comments as $comment)
-          <div class="d-flex mb-2">
-            <img
-              src="{{ $comment->user->profile_image ? asset('storage/' . $comment->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($comment->user->name) }}"
-              alt="{{ $comment->user->name }}" class="rounded-circle me-2" width="32" height="32">
-            <div>
-              <strong>{{ $comment->user->name }}</strong>
-              <p class="mb-0">{{ $comment->content }}</p>
-              <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
-            </div>
-          </div>
+        @foreach($newPost->comments as $newComment)
+          @include('comments.comment_card', ['userComment' => $newComment]);
         @endforeach
       </div>
       <form class="add-comment-form" data-post-id="{{ $newPost->id }}">
@@ -78,5 +62,3 @@
 
   </div>
 </div>
-
-

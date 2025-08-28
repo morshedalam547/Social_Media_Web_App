@@ -6,22 +6,33 @@ use App\DTOs\CommentDTO;
 use App\Http\Requests\CommentStoreRequest;
 use App\Services\CommentService;
 
+
 class CommentController extends Controller
 {
-    public function __construct(private CommentService $service) {}
+    public function __construct(protected CommentService $service) {
 
-    public function store(CommentStoreRequest $request)
-    {
-        // Request → DTO
+        $this->service = $service;
+    }
+
+    public function store(CommentStoreRequest $request, $post){
+        // DTO Make
         $dto = new CommentDTO(
             auth()->id(),
-            $request->input('post_id'),
+            $post,
             $request->input('content')
         );
 
-        // DTO → Service → Repository → DB
-        $comment = $this->service->createComment($dto);
+        // Service -> Repository -> DB
+        $userComment = $this->service->createComment($dto);
 
-        return response()->json($comment);
+        // Blade partial render
+        $html = view('comments.comment_card',compact('userComment'))->render();
+
+        return response()->json([
+            'success' => true,
+            'html' => $html,
+            'comments_count' => $userComment->post->comments()->count(),
+        ]);
     }
+
 }

@@ -7,7 +7,10 @@ use App\Repositories\CommentRepositoryInterface;
 
 class CommentService
 {
-    public function __construct(private CommentRepositoryInterface $commentRepo) {}
+    public function __construct(protected CommentRepositoryInterface $commentRepo) {
+
+        $this->commentRepo = $commentRepo;
+    }
 
     public function createComment(CommentDTO $dto)
     {

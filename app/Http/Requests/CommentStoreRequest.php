@@ -8,14 +8,18 @@ class CommentStoreRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        // Only logged in user can comment
+        return auth()->check();
     }
 
     public function rules(): array
     {
         return [
-            'content' => 'required|string|max:1000',
-            'post_id' => 'required|exists:posts,id',
+  
+            'content' => ['required', 'string', 'max:1000'],
+            
         ];
     }
+
+
 }
