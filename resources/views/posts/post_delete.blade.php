@@ -1,4 +1,4 @@
-    @if($post->user_id === auth()->id())
+    @if($newPost->user_id === auth()->id())
 <div class="dropdown position-absolute top-0 end-0 m-3">
   <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
     <i class="fas fa-ellipsis-h"></i>
@@ -6,7 +6,7 @@
   <ul class="dropdown-menu dropdown-menu-end">
     <li>
       <button class="dropdown-item text-danger delete-post-btn" 
-              data-post-id="{{ $post->id }}" 
+              data-post-id="{{ $newPost->id }}" 
               type="button">
         Delete
       </button>

@@ -1,59 +1,71 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Requests\PostStoreRequest;
-use App\Repositories\PostRepositoryInterface;
 
+use App\DTOs\PostDTO;
+use App\Http\Requests\PostStoreRequest;
+use App\Services\PostService;
 use App\Models\Post;
+
 class PostController extends Controller
 {
-    protected $postRepo;
 
-    public function __construct(PostRepositoryInterface $postRepo)
+    //  protected  $service;
+
+    public function __construct(protected PostService $service)
     {
-        $this->postRepo = $postRepo;
+
+         $this->service = $service;
     }
 
-    public function index()
+
+
+
+
+        public function index()
     {
         $user = auth()->user();
-        $posts = $this->postRepo->getAllPosts();
-     
+        $posts = $this->service->getAllPosts();
+
         return view('posts.dashboard', compact('user', 'posts'));
     }
 
-    //New post add function
+
+
+
+    // New post add function
     public function store(PostStoreRequest $request)
     {
+        // Request → DTO
+        $dto = new PostDTO(
+            auth()->id(),
+            $request->input('content'),
+            $request->file('image') ?? null
+        );
 
-        // $post = $this->postRepo->storePost($request->validated());
+        // DTO → Service
+        $newPost = $this->service->createPost($dto);
 
-        $post = $this->postRepo->storePost([
-        'user_id' => auth()->id(),          
-        'content' => $request->input('content'),
-        'image'   => $request->file('image') ?? null,
-    ]);
-
-        $html = view('posts.post_card', compact('post'))->render();
+        $html = view('posts.post_card', compact('newPost'))->render();
 
         return response()->json([
             'success' => true,
             'html' => $html,
-            'message'=> 'post create Successfully',
+            'message' => 'Post created Successfully',
         ]);
     }
 
 
 
-  //Post Delete Function
+
+    // Post Delete Function
     public function destroy(Post $post)
     {
-        $this->postRepo->deletePost($post);
+        $this->service->deletePost($post);
 
         return response()->json([
             'success' => true,
             'message' => 'Post deleted successfully.'
         ]);
     }
-
 }

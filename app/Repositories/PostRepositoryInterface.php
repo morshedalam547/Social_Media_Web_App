@@ -7,6 +7,7 @@ use App\Models\Post;
 interface PostRepositoryInterface
 {
     public function getAllPosts();
-  public function storePost(array $data); // এখানে Request আর নাই
-      public function deletePost(Post $post); // ✅ add delete method
+  public function storePost(array $data); 
+      public function deletePost(Post $post); 
+      
 }

@@ -32,7 +32,7 @@ Route::prefix('profile')->name('profile.')->group(function () {
 Route::prefix('posts')->name('posts.')->group(function () {
     Route::post('/', [PostController::class, 'store'])->name('store');
     Route::get('/{post}', [PostController::class, 'show'])->name('show');
-    Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
+    Route::delete('/{post}', [PostController::class, 'destroy']);
     Route::post('/like', [LikeController::class, 'like'])->name('like');
     Route::post('/{post}/comment', [CommentController::class, 'store'])->name('comment.store');
     });

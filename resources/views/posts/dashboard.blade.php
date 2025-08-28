@@ -3,28 +3,29 @@
 
 @section('content')
 
-<main class="content">
-   <br> <br>
-  <h4>Welcome, To {{ $user->name }} 👋</h4> <br>
+  <main class="content">
+    <br> <br>
+    <h4>Welcome, To {{ $user->name }} 👋</h4> <br>
 
-  @include('posts.create_post')
+    @include('posts.create_post')
 
-  <div id="postsContainer">
-    @include('posts.message.message')
+    <div id="postsContainer">
+      @include('posts.message.message')
 
-    @foreach($posts as $post)
+      @foreach($posts as $postNew)
 
-      @include('posts.post_card', ['post' => $post])
-
-    @endforeach
-    
-  </div>
-</main>
+        @include('posts.post_card', ['newPost' => $postNew])
+        
+      @endforeach
 
 
-@include('posts.like')
-@include('posts.comments')
-@include('posts.share')
+    </div>
+  </main>
+
+
+  @include('posts.like')
+  @include('posts.comments')
+  @include('posts.share')
 
 
 @endsection
