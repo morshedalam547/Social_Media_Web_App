@@ -24,7 +24,7 @@
 
 
   @include('posts.like')
-  @include('posts.comments')
+  @include('posts.comments_ajax')
   @include('posts.share')
 
 
