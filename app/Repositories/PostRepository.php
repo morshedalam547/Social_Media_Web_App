@@ -1,13 +1,10 @@
 <?php
 
 namespace App\Repositories;
-
 use App\Models\Post;
-use Illuminate\Http\Request;
 
 class PostRepository implements PostRepositoryInterface
 {
-
     public function getAllPosts()
     {
         return Post::with(['user', 'comments.user', 'likes'])
@@ -15,20 +12,20 @@ class PostRepository implements PostRepositoryInterface
             ->paginate(10);
     }
 
-//New Post Create
-public function storePost(array $data)
-{
-    //New post Model make array base
-    $newPost = new Post($data);
+    //New Post Create
+    public function storePost(array $data)
+    {
+        //New post Model make array base
+        $newPost = new Post($data);
 
-    if (!empty($data['image'])) {
-        $newPost->image = $data['image']->store('post_images', 'public');
+        if (!empty($data['image'])) {
+            $newPost->image = $data['image']->store('post_images', 'public');
+        }
+
+        $newPost->save();
+
+        return $newPost->fresh();
     }
-
-    $newPost->save();
-
-    return $newPost->fresh();
-}
 
     public function deletePost(Post $post)
     {
@@ -42,25 +39,9 @@ public function storePost(array $data)
     }
 
 
-    
+
 
 }
 
 
 
-
-
-// public function storePost(array $data)
-// {
-//     // Post object create
-
-//     $newPost = new Post([
-//         'user_id' => auth()->id(),
-//         'content' => $data['content'],
-//     ]);
-
- 
-//     // Image thakle upload kora
-//     if (!empty($data['image'])) {
-//         $newPost->image = $data['image']->store('post_images', 'public');
-//     }

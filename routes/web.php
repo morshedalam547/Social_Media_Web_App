@@ -1,22 +1,22 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\LikeController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\NewPasswordController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 // Welcome / Public Home
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'home']);
 
 Route::middleware('auth')->group(function () {
     
 Route::get('/dashboard', [PostController::class, 'index'])->name('dashboard');
 
-    // Profile Routes
+// Profile Routes
 Route::prefix('profile')->name('profile.')->group(function () {
     Route::get('/', [ProfileController::class, 'show'])->name('show');
     Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
@@ -28,7 +28,7 @@ Route::prefix('profile')->name('profile.')->group(function () {
     });
 });
 
-    // Posts Routes
+// Posts Routes
 Route::prefix('posts')->name('posts.')->group(function () {
     Route::post('/', [PostController::class, 'store'])->name('store');
     Route::get('/{post}', [PostController::class, 'show'])->name('show');

@@ -1,52 +1,50 @@
-    @if($newPost->user_id === auth()->id())
-<div class="dropdown position-absolute top-0 end-0 m-3">
-  <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-    <i class="fas fa-ellipsis-h"></i>
-  </button>
-  <ul class="dropdown-menu dropdown-menu-end">
-    <li>
-      <button class="dropdown-item text-danger delete-post-btn" 
-              data-post-id="{{ $newPost->id }}" 
-              type="button">
-        Delete
-      </button>
-    </li>
-  </ul>
-</div>
-@endif 
+@if($newPost->user_id === auth()->id())
+  <div class="dropdown position-absolute top-0 end-0 m-3">
+    <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+      <i class="fas fa-ellipsis-h"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li>
+        <button class="dropdown-item text-danger delete-post-btn" data-post-id="{{ $newPost->id }}" type="button">
+          Delete
+        </button>
+      </li>
+    </ul>
+  </div>
+@endif
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 
-<script>
+  <script>
 
-$(document).on('click', '.delete-post-btn', function () {
-    let postId = $(this).data('post-id');
-    let postCard = $(`.post-card[data-post-id="${postId}"]`);
+    $(document).on('click', '.delete-post-btn', function () {
+      let postId = $(this).data('post-id');
+      let postCard = $(`.post-card[data-post-id="${postId}"]`);
 
-    $.ajax({
+      $.ajax({
         url: "{{ url('posts') }}/" + postId,
         type: "POST",
         data: {
-            _method: "DELETE",
-            _token: "{{ csrf_token() }}",
+          _method: "DELETE",
+          _token: "{{ csrf_token() }}",
         },
         success: function (res) {
-            if (res.success) {
-                postCard.fadeOut(400, function () {
-                    $(this).remove();
-                });
+          if (res.success) {
+            postCard.fadeOut(400, function () {
+              $(this).remove();
+            });
 
-                notyf.info(res.message);
+            notyf.info(res.message);
 
-            } else {
-                notyf.error("Something went wrong.");
-            }
+          } else {
+            notyf.error("Something went wrong.");
+          }
         },
-       
-    });
-});
-</script>
 
-@endpush 
+      });
+    });
+  </script>
+
+@endpush

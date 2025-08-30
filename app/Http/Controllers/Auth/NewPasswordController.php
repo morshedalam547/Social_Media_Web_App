@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class NewPasswordController extends Controller
 {
-    
+
     public function create(Request $request, $token)
     {
         return view('auth.reset-password', [
@@ -41,12 +41,12 @@ class NewPasswordController extends Controller
 
         if ($status == Password::PASSWORD_RESET) {
             notyf()
-            ->position('x', 'right')
-            ->position('y', 'top')
-            ->duration(3000) // 3 seconds
-            ->success('Your Password Reset Successfully.');
-            
-return redirect()->route('login');
+                ->position('x', 'right')
+                ->position('y', 'top')
+                ->duration(3000) // 3 seconds
+                ->success('Your Password Reset Successfully.');
+
+            return redirect()->route('login');
         }
 
         return back()->withErrors(['email' => [__($status)]]);

@@ -3,7 +3,7 @@
   /* Left sidebar */
   .sidebar-left {
     position: fixed;
-    top: 56px; 
+    top: 56px;
     left: 0;
     width: 250px;
     height: calc(100vh - 56px);
@@ -17,7 +17,7 @@
   /* Right sidebar */
   .sidebar-right {
     position: fixed;
-    top: 56px; 
+    top: 56px;
     right: 0;
     width: 250px;
     height: calc(100vh - 56px);
@@ -48,5 +48,3 @@
     <li class="nav-item"><a href="#" class="nav-link">Support</a></li>
   </ul>
 </div>
-
-

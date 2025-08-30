@@ -1,88 +1,74 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Repositories\ProfileRepositoryInterface;
-use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CoverUpdateRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Requests\ProfileImageUpdateRequest;
+use App\Repositories\ProfileRepositoryInterface;
 
 class ProfileController extends Controller
 {
-    protected $profileRepo;
 
-    public function __construct(ProfileRepositoryInterface $profileRepo)
+    /**
+     * Inject ProfileRepository dependency
+     */
+    public function __construct(protected ProfileRepositoryInterface $profileRepo)
     {
         $this->profileRepo = $profileRepo;
     }
-        public function show()
-    {
-      // Repository থেকে user + posts fetch
-        $user = $this->profileRepo->getUser();
 
+    //Display the user profile along with posts
+    public function show()
+    {
+        $user = $this->profileRepo->getUser();
         $posts = $user->posts;
 
-        // Blade  pass
+        // Blade এ data pass
         return view('UserProfile', compact('user', 'posts'));
     }
 
-
+    //Show the profile edit form
     public function edit()
     {
         $user = $this->profileRepo->getUser();
         return view('profile.edit', compact('user'));
     }
 
-    
+    //Update user profile information
     public function update(ProfileUpdateRequest $request)
     {
-        // $this->profileRepo->updateProfile($request->validated());
-
         $this->profileRepo->updateProfile([
-
-            'name'         => $request->input('name'),
-            'email'        =>$request->input('email'),
-            'profile_image' =>$request->file('profile_image'),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'profile_image' => $request->file('profile_image'),
         ]);
 
         notifySuccess('Profile updated successfully.');
-
         return redirect()->route('profile.show');
     }
 
-public function updateCover(CoverUpdateRequest $request){
+    //Update user cover photo
+    public function updateCover(CoverUpdateRequest $request)
+    {
+        $this->profileRepo->updateCover([
+            'cover_image' => $request->file('cover_image'),
+        ]);
 
-        // $this->profileRepo->updateCover($request->validated());
+        notifySuccess('Cover image updated successfully.');
+        return back();
+    }
 
-       $this->profileRepo->updateCover([
+    //Update only the profile picture
+    public function updateProfileImage(ProfileImageUpdateRequest $request)
+    {
+        $this->profileRepo->updateProfileImage([
+            'profile_image' => $request->file('profile_image'),
+        ]);
 
-        'userCover' => $request->file('cover_image'), 
-    ]);
-
-     notifySuccess('cover Image updated successfully.');
-
-    return back();
-}
-    
-public function updateProfileImage(ProfileImageUpdateRequest $request)
-{
-    $this->profileRepo->updateProfileImage([
-
-        'profile_image' => $request->file('profile_photo'), 
-    ]);
-
-    notifySuccess('Profile Image updated successfully.');
-    return back();
-}
-
+        notifySuccess('Profile image updated successfully.');
+        return back();
+    }
 }
 
 
-
-    // public function show()
-    // {
-    //     $user = $this->profileRepo->getUser();
-    //     $posts = $user->posts()->with(['likes', 'comments.user'])->latest()->get();
-
-    //     return view('UserProfile', compact('user', 'posts'));
-    
-    // }

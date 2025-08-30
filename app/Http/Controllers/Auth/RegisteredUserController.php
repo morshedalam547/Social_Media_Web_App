@@ -27,40 +27,40 @@ class RegisteredUserController extends Controller
 
 
     public function store(Request $request)
-{
-    try {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required','string','lowercase','email','max:255','unique:users,email'],
-            'password' => [
-                'required',
-                'confirmed',
-                Password::min(8)
-                    ->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised()
-            ],
-        ], [
-            'password.confirmed' => 'Password and Confirm Password do not match.',
-            'password.min' => 'Password must be at least 8 characters.',
-        ]);
+    {
+        try {
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
+                'password' => [
+                    'required',
+                    'confirmed',
+                    Password::min(8)
+                        ->letters()
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols()
+                        ->uncompromised()
+                ],
+            ], [
+                'password.confirmed' => 'Password and Confirm Password do not match.',
+                'password.min' => 'Password must be at least 8 characters.',
+            ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
 
-        notifySuccess('Registration Successfully.');
+            notifySuccess('Registration Successfully.');
 
-         return redirect()->route('login');
+            return redirect()->route('login');
 
-    } catch (\Illuminate\Validation\ValidationException $e) {
-   
-        return back()->withErrors($e->errors())->withInput()->with('register_errors', true);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+
+            return back()->withErrors($e->errors())->withInput()->with('register_errors', true);
+        }
     }
-}
 
 }

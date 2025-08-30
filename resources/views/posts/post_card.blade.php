@@ -1,4 +1,4 @@
-<div class="card mb-3 shadow-sm position-relative post-card" data-post-id="{{ $newPost->id }}"> 
+<div class="card mb-3 shadow-sm position-relative post-card" data-post-id="{{ $newPost->id }}">
   <div class="card-body">
 
     {{-- User Post Image Icon show --}}
@@ -17,7 +17,8 @@
     <p class="mb-2">{{ $newPost->content }}</p><br>
 
     @if($newPost->image)
-      <img src="{{ asset('storage/' . $newPost->image) }}" alt="Post Image" class="img-fluid rounded mb-2" style="max-height:300px;">
+      <img src="{{ asset('storage/' . $newPost->image) }}" alt="Post Image" class="img-fluid rounded mb-2"
+        style="max-height:300px;">
     @endif
 
     {{-- Like & Comment & Share --}}
@@ -27,7 +28,8 @@
       </button>
 
       <button class="btn btn-link text-muted comment-toggle-btn" data-post-id="{{ $newPost->id }}">
-        <i class="fas fa-comment me-1"></i> Comment (<span class="comment-count">{{ $newPost->comments->count() }}</span>)
+        <i class="fas fa-comment me-1"></i> Comment (<span
+          class="comment-count">{{ $newPost->comments->count() }}</span>)
       </button>
 
       <div class="dropdown">
@@ -35,9 +37,12 @@
           <i class="fas fa-share me-1"></i> Share
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item share-item" data-platform="facebook" data-post-id="{{ $newPost->id }}" href="#">Facebook</a></li>
-          <li><a class="dropdown-item share-item" data-platform="twitter" data-post-id="{{ $newPost->id }}" href="#">Twitter</a></li>
-          <li><a class="dropdown-item share-item" data-platform="email" data-post-id="{{ $newPost->id }}" href="#">Email</a></li>
+          <li><a class="dropdown-item share-item" data-platform="facebook" data-post-id="{{ $newPost->id }}"
+              href="#">Facebook</a></li>
+          <li><a class="dropdown-item share-item" data-platform="twitter" data-post-id="{{ $newPost->id }}"
+              href="#">Twitter</a></li>
+          <li><a class="dropdown-item share-item" data-platform="email" data-post-id="{{ $newPost->id }}"
+              href="#">Email</a></li>
         </ul>
       </div>
     </div>
@@ -52,7 +57,8 @@
       <form class="add-comment-form" data-post-id="{{ $newPost->id }}">
         @csrf
         <div class="input-group">
-          <input type="text" name="content" class="form-control form-control-sm" placeholder="Write a comment..." required>
+          <input type="text" name="content" class="form-control form-control-sm" placeholder="Write a comment..."
+            required>
           <button class="btn btn-primary btn-sm" type="submit"><i class="fas fa-paper-plane"></i></button>
         </div>
       </form>

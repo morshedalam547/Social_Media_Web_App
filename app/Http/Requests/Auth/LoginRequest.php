@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Requests\Auth;
-
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -38,24 +37,22 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-public function authenticate(): void
-{
-    $this->ensureIsNotRateLimited();
+    public function authenticate(): void
+    {
+        $this->ensureIsNotRateLimited();
 
-    $loginField = filter_var($this->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+        $loginField = filter_var($this->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
 
-    if (! Auth::attempt([$loginField => $this->input('login'), 'password' => $this->input('password')], $this->boolean('remember'))) {
-        RateLimiter::hit($this->throttleKey());
+        if (!Auth::attempt([$loginField => $this->input('login'), 'password' => $this->input('password')], $this->boolean('remember'))) {
+            RateLimiter::hit($this->throttleKey());
 
-        throw ValidationException::withMessages([
-            'login' => trans('auth.failed'),
-        ]);
+            throw ValidationException::withMessages([
+                'login' => trans('auth.failed'),
+            ]);
+        }
+
+        RateLimiter::clear($this->throttleKey());
     }
-
-    RateLimiter::clear($this->throttleKey());
-}
-
-
     /**
      * Ensure the login request is not rate limited.
      *
@@ -63,7 +60,7 @@ public function authenticate(): void
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -82,9 +79,9 @@ public function authenticate(): void
     /**
      * Get the rate limiting throttle key for the request.
      */
-  public function throttleKey(): string
-{
-    return Str::transliterate(Str::lower($this->input('login')).'|'.$this->ip());
-}
+    public function throttleKey(): string
+    {
+        return Str::transliterate(Str::lower($this->input('login')) . '|' . $this->ip());
+    }
 
 }

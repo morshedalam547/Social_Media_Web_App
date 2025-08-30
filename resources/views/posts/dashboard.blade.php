@@ -15,7 +15,7 @@
       @foreach($posts as $postNew)
 
         @include('posts.post_card', ['newPost' => $postNew])
-        
+
       @endforeach
 
 

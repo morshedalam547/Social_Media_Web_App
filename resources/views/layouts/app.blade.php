@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Social Media Web App</title>
 
-        {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+    {{--
+    <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
@@ -19,11 +21,12 @@
     {{-- Optional: Custom Styles --}}
     @stack('styles')
 </head>
+
 <body>
     {{-- Navigation Bar --}}
     @include('layouts.navigation')
 
- 
+
 
     {{-- Page Content --}}
     <div class="container mt-4">
@@ -36,6 +39,7 @@
     {{-- Page Specific Scripts --}}
     @stack('scripts')
 
-    
+
 </body>
+
 </html>
