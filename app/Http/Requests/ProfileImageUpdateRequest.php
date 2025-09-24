@@ -13,7 +13,7 @@ class ProfileImageUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'profile_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 }

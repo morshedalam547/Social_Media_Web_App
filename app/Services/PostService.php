@@ -11,7 +11,7 @@ class PostService
         $this->postRepo = $postRepo;
     }
 
-    public function getAllPosts()
+    public function all()
     {
         return $this->postRepo->getAllPosts();
     }
@@ -19,14 +19,14 @@ class PostService
     public function createPost(PostDTO $dto)
     {
         return $this->postRepo->storePost([
-            'user_id' => $dto->user_id,
-            'content' => $dto->content,
-            'image' => $dto->image,
+            'user_id' =>  $dto->user_id,
+            'content' =>  $dto->content,
+            'image' =>  $dto->image,
         ]);
     }
 
-    public function deletePost($post)
+    public function delete($post)
     {
-        return $this->postRepo->deletePost($post);
+        return $this->postRepo->destroyPost($post);
     }
 }

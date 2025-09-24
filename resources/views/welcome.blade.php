@@ -79,7 +79,7 @@
 
             <div class="mb-3">
               <input type="text" name="name" value="{{ old('name') }}"
-                class="form-control @error('name') is-invalid @enderror" placeholder="Full Name" required />
+                class="form-control @error('name') is-invalid @enderror" placeholder="Full Name" />
               @error('name')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
@@ -87,7 +87,7 @@
 
             <div class="mb-3">
               <input type="email" name="email" value="{{ old('email') }}"
-                class="form-control @error('email') is-invalid @enderror" placeholder="Email address" required />
+                class="form-control @error('email') is-invalid @enderror" placeholder="Email address" />
               @error('email')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
@@ -102,8 +102,8 @@
             </div>
 
             <div class="mb-3">
-              <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password"
-                required />
+              <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password"/>
+           
             </div>
 
             <button type="submit" class="btn btn-success w-100">Sign Up</button>
@@ -131,6 +131,7 @@
       document.getElementById('register-form').style.display = 'block';
     @endif
   </script>
+
 
 
 </body>

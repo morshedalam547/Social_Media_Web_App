@@ -1,43 +1,60 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\DTOs\PostDTO;
-use App\Http\Requests\PostStoreRequest;
-use App\Services\PostService;
 use App\Models\Post;
+use App\DTOs\PostDTO;
+use App\Services\PostService;
+use App\Http\Requests\PostStoreRequest;
+use App\Repositories\PostRepositoryInterface;
 
 class PostController extends Controller
 {
-    /**
-     * Inject PostService into controller
+    /*
+     ! Inject PostService into controller
      */
+
     public function __construct(protected PostService $service)
     {
 
         $this->service = $service;
     }
 
-    //Show dashboard with all posts
+    // Show dashboard with all posts
+
+    /* 
+    ! PostRepositoryInterface only one method injection index function under...
+     */
+
+    // public function index(PostRepositoryInterface $postRepo)
+    // {
+    //     $user = auth()->user();
+    //     $posts = $postRepo->getAllPosts();
+
+    //     return view('posts.dashboard', compact('user', 'posts'));
+
+    // }
+
     public function index()
     {
         $user = auth()->user();
-        $posts = $this->service->getAllPosts();
+        $posts = $this->service->all();
 
         return view('posts.dashboard', compact('user', 'posts'));
     }
 
-    // New post add function
+
+  //New post add function
     public function store(PostStoreRequest $request)
     {
-        // Request → DTO
-        $dto = new PostDTO(
+        // object Request → DTO
+        $newDto = new PostDTO(
             auth()->id(),
             $request->input('content'),
             $request->file('image') ?? null
         );
 
         // DTO → Service
-        $newPost = $this->service->createPost($dto);
+        $newPost = $this->service->createPost($newDto);
 
         $html = view('posts.post_card', compact('newPost'))->render();
 
@@ -51,7 +68,7 @@ class PostController extends Controller
     // Post Delete Function
     public function destroy(Post $post)
     {
-        $this->service->deletePost($post);
+        $this->service->delete($post);
 
         return response()->json([
             'success' => true,

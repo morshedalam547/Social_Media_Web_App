@@ -7,6 +7,6 @@ interface PostRepositoryInterface
 {
   public function getAllPosts();
   public function storePost(array $data);
-  public function deletePost(Post $post);
+  public function destroyPost(Post $post);
 
 }

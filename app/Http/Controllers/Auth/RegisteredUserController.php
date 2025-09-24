@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\View\View;
+use Illuminate\Validation\ValidationException;
 
 class RegisteredUserController extends Controller
 {
@@ -30,7 +31,7 @@ class RegisteredUserController extends Controller
     {
         try {
             $request->validate([
-                'name' => ['required', 'string', 'max:255'],
+                'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z0-9\s]+$/'],
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
                 'password' => [
                     'required',
@@ -43,10 +44,14 @@ class RegisteredUserController extends Controller
                         ->uncompromised()
                 ],
             ], [
+                'name.regex' => 'Name field এ শুধু Letter, Number আর Space ব্যবহার করা যাবে।',
+                'email.email' => 'সঠিক email address দিন।',
                 'password.confirmed' => 'Password and Confirm Password do not match.',
                 'password.min' => 'Password must be at least 8 characters.',
             ]);
 
+            // dd($request->all());
+            
             User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -57,7 +62,7 @@ class RegisteredUserController extends Controller
 
             return redirect()->route('login');
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
 
             return back()->withErrors($e->errors())->withInput()->with('register_errors', true);
         }

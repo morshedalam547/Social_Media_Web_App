@@ -31,16 +31,17 @@
                     <img src="https://via.placeholder.com/120" 
                          alt="{{ $user->name }}" class="rounded-circle border border-3 border-white shadow">
                 @endif
+               
+                <form id="profileUploadForm" action="{{ route('profile.updateImage') }}" method="POST" enctype="multipart/form-data" style="display:none;">
+                    @csrf
+                    <input type="file" name="profile_image" id="profileInput" accept="image/*" onchange="this.form.submit();">
+                </form>
 
-                <button class="btn btn-light small shadow-sm rounded-circle position-absolute top-0 end-0"
+                 <button class="btn btn-light small shadow-sm rounded-circle position-absolute top-0 end-0"
                         onclick="document.getElementById('profileInput').click();">
                     <i class="fas fa-camera"></i>
                 </button>
 
-                <form id="profileUploadForm" action="{{ route('profile.updateImage') }}" method="POST" enctype="multipart/form-data" style="display:none;">
-                    @csrf
-                    <input type="file" name="profile_photo" id="profileInput" accept="image/*" onchange="this.form.submit();">
-                </form>
             </div>
         </div>
 

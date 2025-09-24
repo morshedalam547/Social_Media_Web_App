@@ -4,17 +4,22 @@ namespace App\DTOs;
 
 class PostDTO
 {
+    //properties
     public int $user_id;
     public string $content;
-    public $image; 
+    public string $z;
+    public $image;
 
 
 
-    
-    public function __construct(int $user_id, string $content, $image = null)
+
+    //method
+    public function __construct($id_user, $new_content, $new_image) //user Request filed
     {
-        $this->user_id = $user_id;
-        $this->content = $content;
-        $this->image   = $image;
+        //public class under request data.
+
+        $this->user_id = $id_user;
+        $this->content = $new_content;
+        $this->image = $new_image;
     }
 }

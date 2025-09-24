@@ -9,7 +9,7 @@ class PostRepository implements PostRepositoryInterface
     {
         return Post::with(['user', 'comments.user', 'likes'])
             ->latest()
-            ->paginate(10);
+            ->paginate(3);
     }
 
     //New Post Create
@@ -21,13 +21,14 @@ class PostRepository implements PostRepositoryInterface
         if (!empty($data['image'])) {
             $newPost->image = $data['image']->store('post_images', 'public');
         }
+ 
 
         $newPost->save();
 
-        return $newPost->fresh();
+        return $newPost;
     }
 
-    public function deletePost(Post $post)
+    public function destroyPost(Post $post)
     {
         if ($post->user_id !== auth()->id()) {
             abort(403);
