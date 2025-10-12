@@ -14,7 +14,7 @@ class PostStoreRequest extends FormRequest
     {
         return [
             'content' => 'required|string',
-            'image'   => 'nullable|image|mimes:jpg,jpeg,png,gif',
+               'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ];
     }
 }

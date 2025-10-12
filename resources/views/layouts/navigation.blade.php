@@ -1,13 +1,24 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mb-2 py-2 border-bottom shadow-sm">
   <div class="container">
-    <a class="navbar-brand text-primary fw-bold" href="{{ route('dashboard') }}">Social Media App</a>
+    <a class="navbar-brand text-primary fw-bold" href="{{ route('dashboard') }}">Facebook Clone</a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
+  <!-- 🔍 Search Bar -->
+    <form method="GET" action="{{ route('dashboard') }}" class="mb-4">
+        <div class="input-group shadow-sm">
+            <input type="text" 
+                   name="search" 
+                   value="{{ request('search') }}" 
+                   class="form-control" 
+                   placeholder="Search posts or users...">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      
       <ul class="navbar-nav ms-auto">
         @auth
               <li class="nav-item dropdown bg-success:hover">

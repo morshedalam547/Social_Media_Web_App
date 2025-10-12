@@ -9,7 +9,7 @@ class PostRepository implements PostRepositoryInterface
     {
         return Post::with(['user', 'comments.user', 'likes'])
             ->latest()
-            ->paginate(3);
+            ->paginate(15);
     }
 
     //New Post Create

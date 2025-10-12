@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Social Media Web App</title>
+  <title>Facebook Clone App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
@@ -37,7 +37,7 @@
 
         <!-- Left Section -->
         <div class="mb-4">
-          <div class="facebook-text mb-2">Social Media App</div>
+          <div class="facebook-text mb-2">Facebook Clone App</div>
           <h5>Recent logins</h5>
           <p>Click your picture or add an account.</p>
           <div class="d-flex gap-3">
@@ -132,7 +132,7 @@
     @endif
   </script>
 
-HI Morshed
+
 
 </body>
 
