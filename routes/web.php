@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\UserController;
 
 // Welcome / Public Home
 Route::get('/', [HomeController::class, 'home']);
@@ -45,6 +46,11 @@ Route::prefix('password')->name('password.')->group(function () {
     Route::get('/reset/{token}', [NewPasswordController::class, 'create'])->name('reset');
     Route::post('/reset', [NewPasswordController::class, 'store'])->name('update');
 });
+
+
+
+
+Route::get('/user/{id}', [UserController::class, 'profile'])->name('user.profile');
 
 require __DIR__.'/auth.php';
 

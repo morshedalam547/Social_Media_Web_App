@@ -2,7 +2,7 @@
   <div class="card-body">
 
     {{-- User Post Image Icon show --}}
-    <div class="d-flex align-items-center mb-2">
+    {{-- <div class="d-flex align-items-center mb-2">
       <img
         src="{{ $newPost->user->profile_image ? asset('storage/' . $newPost->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($newPost->user->name) }}"
         alt="{{ $newPost->user->name }}" class="rounded-circle me-2" width="40" height="40">
@@ -11,7 +11,26 @@
         <strong>{{ $newPost->user->name }}</strong><br>
         <small class="text-muted">{{ $newPost->created_at->diffForHumans() }}</small> <br><br>
       </div>
-    </div>
+    </div> --}}
+
+
+  <div class="d-flex align-items-center mb-2">
+  <a href="{{ route('user.profile', $newPost->user->id) }}" class="text-decoration-none text-dark d-flex align-items-center">
+    <img
+      src="{{ $newPost->user->profile_image ? asset('storage/' . $newPost->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($newPost->user->name) }}"
+      alt="{{ $newPost->user->name }}"
+      class="rounded-circle me-2"
+      width="40"
+      height="40">
+     <div>
+        <strong>{{ $newPost->user->name }}</strong><br>
+        <small class="text-muted">{{ $newPost->created_at->diffForHumans() }}</small> <br><br>
+      </div>
+    
+  </a>
+</div>
+
+
 
     {{-- Post Content --}}
     <p class="mb-2">{{ $newPost->content }}</p><br>

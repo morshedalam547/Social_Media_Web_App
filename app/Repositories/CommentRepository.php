@@ -9,11 +9,8 @@ class CommentRepository implements CommentRepositoryInterface
     public function storeComment(array $data): Comment
     {
         $comment = Comment::create($data);
-//logout
 
-
-//login
         return $comment->fresh();
-        //pl,plk
+      
     }
 }
