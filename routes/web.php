@@ -52,6 +52,15 @@ Route::prefix('password')->name('password.')->group(function () {
 
 Route::get('/user/{id}', [UserController::class, 'profile'])->name('user.profile');
 
+
+Route::middleware('auth')->group(function(){
+    Route::get('/friends/pending', [FriendshipController::class, 'pendingRequests'])->name('friend.pending');
+    Route::post('/user/{user}/add-friend', [FriendshipController::class, 'sendRequest'])->name('friend.add');
+    Route::post('/friendship/{friendship}/accept', [FriendshipController::class, 'acceptRequest'])->name('friend.accept');
+    Route::post('/friendship/{friendship}/reject', [FriendshipController::class, 'rejectRequest'])->name('friend.reject');
+});
+
+
 require __DIR__.'/auth.php';
 
 

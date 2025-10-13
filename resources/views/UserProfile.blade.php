@@ -46,6 +46,7 @@
                 </div>
 
                 {{-- Card Body --}}
+             
                 <div class="card-body mt-5 pt-5">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <h4 class="mb-0">{{ $user->name }}</h4>

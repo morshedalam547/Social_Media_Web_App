@@ -1,43 +1,23 @@
 <div class="card mb-3 shadow-sm position-relative post-card" data-post-id="{{ $newPost->id }}">
   <div class="card-body">
 
-    {{-- User Post Image Icon show --}}
-    {{-- <div class="d-flex align-items-center mb-2">
-      <img
-        src="{{ $newPost->user->profile_image ? asset('storage/' . $newPost->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($newPost->user->name) }}"
-        alt="{{ $newPost->user->name }}" class="rounded-circle me-2" width="40" height="40">
-
-      <div>
-        <strong>{{ $newPost->user->name }}</strong><br>
-        <small class="text-muted">{{ $newPost->created_at->diffForHumans() }}</small> <br><br>
-      </div>
-    </div> --}}
-
-
-  <div class="d-flex align-items-center mb-2">
-  <a href="{{ route('user.profile', $newPost->user->id) }}" class="text-decoration-none text-dark d-flex align-items-center">
-    <img
-      src="{{ $newPost->user->profile_image ? asset('storage/' . $newPost->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($newPost->user->name) }}"
-      alt="{{ $newPost->user->name }}"
-      class="rounded-circle me-2"
-      width="40"
-      height="40">
-     <div>
-        <strong>{{ $newPost->user->name }}</strong><br>
-        <small class="text-muted">{{ $newPost->created_at->diffForHumans() }}</small> <br><br>
-      </div>
-    
-  </a>
-</div>
-
-
+    {{-- User Post --}}
+    <div class="d-flex align-items-center mb-2">
+      <a href="{{ route('user.profile', $newPost->user->id) }}" class="text-decoration-none text-dark d-flex align-items-center">
+        <img src="{{ $newPost->user->profile_image ? asset('storage/' . $newPost->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($newPost->user->name) }}" 
+             alt="{{ $newPost->user->name }}" class="rounded-circle me-2" width="40" height="40">
+        <div>
+          <strong>{{ $newPost->user->name }}</strong><br>
+          <small class="text-muted">{{ $newPost->created_at->diffForHumans() }}</small>
+        </div>
+      </a>
+    </div>
 
     {{-- Post Content --}}
-    <p class="mb-2">{{ $newPost->content }}</p><br>
+    <p class="mb-2">{{ $newPost->content }}</p>
 
     @if($newPost->image)
-      <img src="{{ asset('storage/' . $newPost->image) }}" alt="Post Image" class="img-fluid rounded mb-2"
-        style="max-height:300px;">
+      <img src="{{ asset('storage/' . $newPost->image) }}" alt="Post Image" class="img-fluid rounded mb-2" style="max-height:300px;">
     @endif
 
     {{-- Like & Comment & Share --}}
@@ -47,8 +27,7 @@
       </button>
 
       <button class="btn btn-link text-muted comment-toggle-btn" data-post-id="{{ $newPost->id }}">
-        <i class="fas fa-comment me-1"></i> Comment (<span
-          class="comment-count">{{ $newPost->comments->count() }}</span>)
+        <i class="fas fa-comment me-1"></i> Comment (<span class="comment-count">{{ $newPost->comments->count() }}</span>)
       </button>
 
       <div class="dropdown">
@@ -56,12 +35,9 @@
           <i class="fas fa-share me-1"></i> Share
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item share-item" data-platform="facebook" data-post-id="{{ $newPost->id }}"
-              href="#">Facebook</a></li>
-          <li><a class="dropdown-item share-item" data-platform="twitter" data-post-id="{{ $newPost->id }}"
-              href="#">Twitter</a></li>
-          <li><a class="dropdown-item share-item" data-platform="email" data-post-id="{{ $newPost->id }}"
-              href="#">Email</a></li>
+          <li><a class="dropdown-item share-item" data-platform="facebook" data-post-id="{{ $newPost->id }}" href="#">Facebook</a></li>
+          <li><a class="dropdown-item share-item" data-platform="twitter" data-post-id="{{ $newPost->id }}" href="#">Twitter</a></li>
+          <li><a class="dropdown-item share-item" data-platform="email" data-post-id="{{ $newPost->id }}" href="#">Email</a></li>
         </ul>
       </div>
     </div>
@@ -69,15 +45,16 @@
     {{-- Comments Section --}}
     <div class="comments-section mt-3 d-none" id="commentsSection{{ $newPost->id }}">
       <div class="comments-list mb-3">
-        @foreach($newPost->comments as $newComment)
-          @include('comments.comment_card', ['userComment' => $newComment]);
+        @foreach($newPost->comments->where('parent_id', null) as $newComment)
+          @include('comments.comment_card', ['userComment' => $newComment])
         @endforeach
       </div>
+
+      {{-- Add main comment --}}
       <form class="add-comment-form" data-post-id="{{ $newPost->id }}">
         @csrf
         <div class="input-group">
-          <input type="text" name="content" class="form-control form-control-sm" placeholder="Write a comment..."
-            required>
+          <input type="text" name="content" class="form-control form-control-sm" placeholder="Write a comment..." required>
           <button class="btn btn-primary btn-sm" type="submit"><i class="fas fa-paper-plane"></i></button>
         </div>
       </form>

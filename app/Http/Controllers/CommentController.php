@@ -1,16 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\DTOs\CommentDTO;
 use App\Http\Requests\CommentStoreRequest;
 use App\Services\CommentService;
-
 
 class CommentController extends Controller
 {
     public function __construct(protected CommentService $service)
     {
-        $this->service = $service;
     }
 
     public function store(CommentStoreRequest $request, $post)
@@ -18,7 +17,8 @@ class CommentController extends Controller
         $dto = new CommentDTO(
             auth()->id(),
             $post,
-            $request->input('content')
+            $request->input('content'),
+            $request->input('parent_id') // <-- parent_id handle
         );
 
         $userComment = $this->service->createComment($dto);
@@ -31,5 +31,4 @@ class CommentController extends Controller
             'comments_count' => $userComment->post->comments()->count(),
         ]);
     }
-
 }
