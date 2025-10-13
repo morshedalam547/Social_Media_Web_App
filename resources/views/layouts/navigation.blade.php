@@ -7,16 +7,18 @@
       <span class="navbar-toggler-icon"></span>
     </button>
   <!-- 🔍 Search Bar -->
-    <form method="GET" action="{{ route('dashboard') }}" class="mb-4">
-        <div class="input-group shadow-sm">
-            <input type="text" 
-                   name="search" 
-                   value="{{ request('search') }}" 
-                   class="form-control" 
-                   placeholder="Search posts or users...">
-            <button class="btn btn-primary" type="submit">Search</button>
-        </div>
-    </form>
+    <form action="{{ route('dashboard') }}" method="GET"
+                            class="d-flex gap-2 flex-wrap align-items-center">
+                            <div class="input-group input-group-sm gap-1">
+                                <input type="text" name="search" value="{{ request('search') }}" class="form-control"
+                                    placeholder="Search student name...">
+                                <button class="btn btn-info " type="submit">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button><gap-2></gap-2>
+                                <a href="{{ route('dashboard') }}" class="btn btn-secondary btn-sm ">Reset</a>
+                            </div>
+
+                        </form>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       
       <ul class="navbar-nav ms-auto">

@@ -1,19 +1,23 @@
 <?php
 
 namespace App\Services;
+
 use App\DTOs\PostDTO;
+use App\DTOs\PostFilterDTO;
 use App\Repositories\PostRepositoryInterface;
 
 class PostService
 {
-    public function __construct(protected PostRepositoryInterface $postRepo)
+    protected PostRepositoryInterface $postRepo;
+
+    public function __construct(PostRepositoryInterface $postRepo)
     {
         $this->postRepo = $postRepo;
     }
 
-    public function all()
+    public function all(PostFilterDTO $filter)
     {
-        return $this->postRepo->getAllPosts();
+        return $this->postRepo->getAllPosts($filter);
     }
 
     public function createPost(PostDTO $dto)

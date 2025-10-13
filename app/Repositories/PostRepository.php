@@ -1,30 +1,35 @@
 <?php
 
 namespace App\Repositories;
+
 use App\Models\Post;
+use App\DTOs\PostFilterDTO;
 
 class PostRepository implements PostRepositoryInterface
 {
-    public function getAllPosts()
+    public function getAllPosts(PostFilterDTO $filter)
     {
-        return Post::with(['user', 'comments.user', 'likes'])
-            ->latest()
-            ->paginate(15);
+        $query = Post::with(['user', 'comments.user', 'likes'])->latest();
+
+        if ($filter->search) {
+            $query->where('content', 'like', "%{$filter->search}%")
+                  ->orWhereHas('user', function ($q) use ($filter) {
+                      $q->where('name', 'like', "%{$filter->search}%");
+                  });
+        }
+
+        return $query->paginate(15);
     }
 
-    //New Post Create
     public function storePost(array $data)
     {
-        //New post Model make array base
         $newPost = new Post($data);
 
         if (!empty($data['image'])) {
             $newPost->image = $data['image']->store('post_images', 'public');
         }
- 
 
         $newPost->save();
-
         return $newPost;
     }
 
@@ -35,14 +40,6 @@ class PostRepository implements PostRepositoryInterface
         }
 
         $post->delete();
-
         return true;
     }
-
-
-
-
 }
-
-
-
