@@ -33,17 +33,21 @@
 
           @auth
           @php
-              $pendingRequests = \App\Models\Friendship::where('receiver_id', auth()->id())
+              $user = auth()->user();
+              $pendingRequests = \App\Models\Friendship::where('receiver_id', $user->id)
                   ->where('status', 'pending')
                   ->with('sender')
                   ->get();
+
+              // Latest 5 unread notifications
+              $notifications = $user->unreadNotifications()->latest()->take(5)->get();
           @endphp
 
-          <!-- 🔔 Friend Request Notification Dropdown -->
+          <!-- Friend Requests Dropdown -->
           <li class="nav-item dropdown position-relative">
             <a class="nav-link dropdown-toggle" href="#" id="friendDropdown" role="button"
                data-bs-toggle="dropdown" aria-expanded="false">
-             <i class="bi bi-bell-fill"></i>
+              <i class="fas fa-user-friends"></i>
               @if($pendingRequests->count() > 0)
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm">
                   {{ $pendingRequests->count() }}
@@ -51,11 +55,12 @@
               @endif
             </a>
 
-            <ul class="dropdown-menu dropdown-menu-end shadow-sm p-2" aria-labelledby="friendDropdown"
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm p-2"
+                aria-labelledby="friendDropdown"
                 style="width: 300px; max-height: 400px; overflow-y: auto;">
               <li class="dropdown-header fw-bold">Friend Requests</li>
               <hr class="my-1">
-              
+
               @forelse($pendingRequests as $request)
                 <li class="d-flex align-items-center justify-content-between mb-2 p-1 border-bottom">
                   <div class="d-flex align-items-center">
@@ -80,7 +85,42 @@
             </ul>
           </li>
 
-          <!-- 👤 Profile Dropdown -->
+          <!-- Notification Dropdown -->
+          <li class="nav-item dropdown position-relative">
+            <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-bell"></i>
+              @if($notifications->count() > 0)
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm">
+                  {{ $notifications->count() }}
+                </span>
+              @endif
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm p-2"
+                aria-labelledby="notificationDropdown"
+                style="width: 300px; max-height: 400px; overflow-y: auto;">
+              <li class="dropdown-header fw-bold">Notifications</li>
+              <hr class="my-1">
+
+              @forelse($notifications as $notification)
+                <li class="d-flex align-items-center mb-2 p-1 border-bottom">
+                  <img src="{{ asset('storage/' . ($notification->data['friend_image'] ?? 'default-avatar.png')) }}"
+                       class="rounded-circle me-2 border" width="40" height="40">
+                  <div>
+                    <div class="small">{{ $notification->data['message'] }}</div>
+                    <a href="{{ route('user.profile', $notification->data['friend_id']) ?? 0 }}" class="small text-primary">
+                      View Profile
+                    </a>
+                  </div>
+                </li>
+              @empty
+                <li class="text-center text-muted py-2">No notifications yet 😅</li>
+              @endforelse
+            </ul>
+          </li>
+
+          <!-- Profile Dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
                data-bs-toggle="dropdown" aria-expanded="false">

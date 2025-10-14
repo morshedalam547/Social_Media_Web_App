@@ -63,6 +63,16 @@ Route::middleware('auth')->group(function(){
 
 Route::get('/friends', [FriendshipController::class, 'friendsList'])->name('friends.list');
 
+// routes/web.php
+// Route::get('/notifications/read/{id}', function ($id) {
+//     $notification = auth()->user()->notifications()->find($id);
+//     if ($notification) {
+//         $notification->markAsRead();
+//     }
+//     return redirect()->back();
+// })->name('notifications.read');
+
+
 require __DIR__.'/auth.php';
 
 

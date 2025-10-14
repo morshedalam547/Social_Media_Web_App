@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Friendship;
-use App\Models\User;
 use Auth;
+use App\Models\User;
+use App\Models\Friendship;
+use Illuminate\Http\Request;
+use App\Notifications\FriendRequestAccepted;
+use Illuminate\Support\Facades\Notification;
 
 class FriendshipController extends Controller
 {
@@ -62,5 +64,27 @@ public function friendsList()
     return view('friends.index', compact('friends'));
 }
 
+public function accept($id)
+{
+    $friendship = Friendship::findOrFail($id);
+
+    // শুধুমাত্র receiver-ই accept করতে পারবে
+    if($friendship->receiver_id != auth()->id()) {
+        abort(403);
+    }
+
+    $friendship->update(['status' => 'accepted']);
+
+    $sender = $friendship->sender;   // Friend request পাঠানো user
+    $receiver = $friendship->receiver; // Current logged-in user
+
+    // 🔔 Sender-কে Notify করা
+    $sender->notify(new FriendRequestAccepted($receiver));
+
+    // 🔔 Receiver-কে Notify করা (Optional, যদি চান receiver-ও bell-এ দেখতে)
+    $receiver->notify(new FriendRequestAccepted($sender));
+
+    return back()->with('success', 'Friend request accepted successfully!');
+}
 
 }
