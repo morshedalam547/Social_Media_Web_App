@@ -120,6 +120,144 @@
             </ul>
           </li>
 
+
+<!-- Chat Dropdown -->
+<li class="nav-item dropdown position-relative">
+    <a class="nav-link dropdown-toggle" href="#" id="chatDropdown" role="button"
+       data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-comments"></i>
+        <span id="chat-unread-badge"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              style="display:none;"></span>
+    </a>
+
+    <ul class="dropdown-menu dropdown-menu-end shadow-sm p-2"
+        aria-labelledby="chatDropdown"
+        style="width:300px; max-height:400px; overflow-y:auto;">
+        <li class="dropdown-header fw-bold">Chats</li>
+        <hr class="my-1">
+        @php $friends = auth()->user()->friends(); @endphp
+
+        @forelse($friends as $friend)
+            @php
+                $unread = $friend->messages()
+                                 ->where('receiver_id', auth()->id())
+                                 ->where('seen', false)->count();
+            @endphp
+            <li class="d-flex justify-content-between align-items-center mb-2 p-1 border-bottom chat-item"
+                data-id="{{ $friend->id }}"
+                data-name="{{ $friend->name }}"
+                style="cursor:pointer;">
+                <span>{{ $friend->name }}</span>
+                <span class="badge bg-danger friend-unread" style="display:{{ $unread>0?'inline-block':'none' }}">{{ $unread }}</span>
+            </li>
+        @empty
+            <li class="text-center text-muted py-2">No friends yet 😅</li>
+        @endforelse
+    </ul>
+</li>
+
+<!-- ✅ Popup Chat Box (hidden by default) -->
+<div id="chat-popup" class="position-fixed bottom-0 end-0 m-3 shadow-lg border rounded bg-white"
+     style="width:320px; display:none; z-index:1050;">
+    <div class="p-2 bg-primary text-white d-flex justify-content-between align-items-center">
+        <span id="chat-popup-name">Chat</span>
+        <button class="btn-close btn-close-white" id="close-chat"></button>
+    </div>
+    <div id="chat-popup-messages" style="height:300px; overflow-y:auto; padding:10px;"></div>
+    <div class="p-2 border-top">
+        <form id="chat-popup-form">
+            @csrf
+            <div class="input-group">
+                <input type="text" id="chat-popup-input" class="form-control" placeholder="Type a message...">
+                <button class="btn btn-primary" type="submit">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ✅ Scripts -->
+<script>
+let selectedFriendId = null;
+
+// 🔄 Update unread badge
+function updateUnreadBadge() {
+    $.get('{{ route("chat.unreadCount") }}', function(res) {
+        if(res.count > 0){
+            $('#chat-unread-badge').text(res.count).show();
+        } else {
+            $('#chat-unread-badge').hide();
+        }
+
+        $('.chat-item').each(function(){
+            let fid = $(this).data('id');
+            let unread = res.byFriend[fid] ?? 0;
+            if(unread > 0){
+                $(this).find('.friend-unread').text(unread).show();
+            } else {
+                $(this).find('.friend-unread').hide();
+            }
+        });
+    });
+}
+updateUnreadBadge();
+setInterval(updateUnreadBadge, 5000);
+
+// 🧩 Open chat popup
+$(document).on('click', '.chat-item', function() {
+    let friendId = $(this).data('id');
+    let friendName = $(this).data('name');
+    selectedFriendId = friendId;
+    $('#chat-popup-name').text(friendName);
+    $('#chat-popup').fadeIn();
+    loadChat(friendId);
+
+    $.post('/chat/' + friendId + '/seen', {_token: '{{ csrf_token() }}'}, function(){
+        updateUnreadBadge();
+    });
+});
+
+// ❌ Close chat popup
+$('#close-chat').click(function() {
+    $('#chat-popup').fadeOut();
+    selectedFriendId = null;
+});
+
+// 📩 Load messages
+function loadChat(friendId){
+    $.get('/chat/' + friendId, function(data){
+        const messagesHtml = $(data).find('#chat-messages').html();
+        $('#chat-popup-messages').html(messagesHtml);
+        $('#chat-popup-messages').scrollTop($('#chat-popup-messages')[0].scrollHeight);
+    });
+}
+
+// 📨 Send message
+$('#chat-popup-form').submit(function(e){
+    e.preventDefault();
+    if(!selectedFriendId) return;
+
+    const msg = $('#chat-popup-input').val().trim();
+    if(!msg) return;
+
+    $.post('/chat/' + selectedFriendId + '/send', {
+        _token: '{{ csrf_token() }}',
+        message: msg
+    }, function(){
+        $('#chat-popup-input').val('');
+        loadChat(selectedFriendId);
+    });
+});
+
+// 🔁 Auto refresh chat when popup open
+setInterval(function(){
+    if(selectedFriendId){
+        loadChat(selectedFriendId);
+    }
+}, 3000);
+</script>
+
+
           <!-- Profile Dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"

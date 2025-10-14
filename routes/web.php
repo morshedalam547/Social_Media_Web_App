@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
@@ -72,7 +73,18 @@ Route::get('/friends', [FriendshipController::class, 'friendsList'])->name('frie
 //     return redirect()->back();
 // })->name('notifications.read');
 
+//
+// Chat page
+Route::get('/chat/{friend}', [ChatController::class, 'show'])->name('chat.show');
 
+// Send message
+Route::post('/chat/{friend}/send', [ChatController::class, 'send'])->name('chat.send');
+
+// Mark as seen
+Route::post('/chat/{friend}/seen', [ChatController::class, 'markAsSeen'])->name('chat.seen');
+
+// Get unread count (for AJAX polling)
+Route::get('/chat/unread-count', [ChatController::class, 'unreadCount'])->name('chat.unreadCount');
 require __DIR__.'/auth.php';
 
 

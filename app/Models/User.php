@@ -56,8 +56,9 @@ public function friends()
     return $sent->union($received)->get();
 }
 
-
-
+public function messages() {
+    return $this->hasMany(Message::class, 'sender_id');
+}
     /**
      * The attributes that should be hidden for serialization.
      *
