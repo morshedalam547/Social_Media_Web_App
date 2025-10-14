@@ -30,6 +30,34 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+public function sentRequests() {
+    return $this->hasMany(Friendship::class, 'sender_id');
+}
+
+public function receivedRequests() {
+    return $this->hasMany(Friendship::class, 'receiver_id');
+}
+
+public function friends()
+{
+    // sender হিসেবে accepted friends
+    $sent = User::join('friendships', 'users.id', '=', 'friendships.receiver_id')
+                ->where('friendships.sender_id', $this->id)
+                ->where('friendships.status', 'accepted')
+                ->select('users.*');
+
+    // receiver হিসেবে accepted friends
+    $received = User::join('friendships', 'users.id', '=', 'friendships.sender_id')
+                    ->where('friendships.receiver_id', $this->id)
+                    ->where('friendships.status', 'accepted')
+                    ->select('users.*');
+
+    // দুইটা query union করে collection return করবো
+    return $sent->union($received)->get();
+}
+
+
+
     /**
      * The attributes that should be hidden for serialization.
      *

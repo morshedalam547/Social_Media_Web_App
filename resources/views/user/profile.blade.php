@@ -1,46 +1,96 @@
-@extends('layouts.app')
-
-@section('content')
-
-
-
 <div class="container mt-5">
     <div class="row justify-content-center">
         <!-- Central Column -->
-        <div class="col-lg-5 col-md-7 col-sm-10">
-
-            <!-- Profile Card -->
+        <div class="col-lg-5 col-md-8 col-sm-10">
             <div class="card shadow-sm mb-4">
+
+                {{-- Cover Photo --}}
                 <div class="position-relative">
-                    {{-- Cover Photo --}}
-                    <img src="{{ $user->cover_image ? asset('storage/' . $user->cover_image) : asset('default.jpg') }}" class="img-fluid rounded-top">
+                    @if ($user->cover_image)
+                        <img src="{{ asset('storage/' . $user->cover_image) }}" class="img-fluid rounded-top">
+                    @else
+                        <img src="default.jpg" class="img-fluid rounded-top">
+                    @endif
 
                     {{-- Cover Upload Button --}}
-                    @auth
-            
+                    @if(auth()->id() === $user->id)
+                    <button class="btn btn-light position-absolute top-0 end-0 m-3 shadow-sm rounded-circle"
+                            onclick="document.getElementById('coverInput').click();">
+                        <i class="fas fa-camera"></i>
+                    </button>
+
                     <form action="{{ route('profile.updateCover') }}" method="POST" enctype="multipart/form-data" style="display:none;">
                         @csrf
                         <input type="file" name="cover_image" id="coverInput" accept="image/*" onchange="this.form.submit();">
                     </form>
-                    @endauth
+                    @endif
 
                     {{-- Profile Image --}}
                     <div class="position-absolute" style="bottom:-45px; left:20px;">
-                        <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : 'https://via.placeholder.com/90' }}"
-                             class="rounded-circle border border-3 border-white shadow" width="90" height="90">
-                        
-                        @auth
+                        @if ($user->profile_image)
+                            <img src="{{ asset('storage/' . $user->profile_image) }}" 
+                                 alt="{{ $user->name }}" class="rounded-circle border border-3 border-white shadow" width="90" height="90">
+                        @else
+                            <img src="https://via.placeholder.com/90" 
+                                 alt="{{ $user->name }}" class="rounded-circle border border-3 border-white shadow">
+                        @endif
+
+                        @if(auth()->id() === $user->id)
                         <form id="profileUploadForm" action="{{ route('profile.updateImage') }}" method="POST" enctype="multipart/form-data" style="display:none;">
                             @csrf
                             <input type="file" name="profile_image" id="profileInput" accept="image/*" onchange="this.form.submit();">
                         </form>
 
-                        @endauth
+                        <button class="btn btn-light btn-sm shadow-sm rounded-circle position-absolute top-0 end-0"
+                                onclick="document.getElementById('profileInput').click();">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                        @endif
                     </div>
                 </div>
 
+                {{-- Card Body --}}
                 <div class="card-body mt-5 pt-5">
-                
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h4 class="mb-0">{{ $user->name }}</h4>
+                        <div class="d-flex gap-2">
+
+                            @if(auth()->id() !== $user->id)
+                                @php
+                                    $friendship = \App\Models\Friendship::where(function($q) use($user){
+                                        $q->where('sender_id', auth()->id())->where('receiver_id', $user->id);
+                                    })->orWhere(function($q) use($user){
+                                        $q->where('sender_id', $user->id)->where('receiver_id', auth()->id());
+                                    })->first();
+                                @endphp
+
+                                @if(!$friendship)
+                                    <form action="{{ route('friend.add', $user) }}" method="POST">
+                                        @csrf
+                                        <button class="btn btn-primary btn-sm">Add Friend</button>
+                                    </form>
+                                @elseif($friendship->status == 'pending')
+                                    @if($friendship->sender_id == auth()->id())
+                                        <button class="btn btn-secondary btn-sm" disabled>Request Sent</button>
+                                    @else
+                                        <form action="{{ route('friend.accept', $friendship) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <button class="btn btn-success btn-sm">Accept</button>
+                                        </form>
+                                        <form action="{{ route('friend.reject', $friendship) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <button class="btn btn-danger btn-sm">Reject</button>
+                                        </form>
+                                    @endif
+                                @elseif($friendship->status == 'accepted')
+                                    <button class="btn btn-success btn-sm" disabled>Friends</button>
+                                @endif
+                            @else
+                                <a href="{{ route('profile.edit') }}" class="btn btn-outline-secondary btn-sm">Edit Profile</a>
+                            @endif
+
+                        </div>
+                    </div>
 
                     <div class="mb-2">
                         <span class="badge bg-success me-1"><i class="fas fa-check"></i> Verified</span>
@@ -48,17 +98,18 @@
                         <p class="mt-2">{{ $user->bio ?? 'Hi 👋, I’m a Backend Software Engineer Developer from Bangladesh' }}</p>
                     </div>
                 </div>
+
             </div>
 
-            <!-- User Posts -->
-            <main class="content">
-               
+            <!-- Main Content -->
+            <main class="content mt-3">
+                <h4>Welcome, {{ $user->name }} 👋</h4>
+           
 
                 <div id="postsContainer">
                     @include('posts.message.message')
-
-                    @foreach($posts as $newPost)
-                        @include('posts.post_card', ['newPost' => $newPost])
+                    @foreach($posts as $postNew)
+                        @include('posts.post_card', ['newPost' => $postNew])
                     @endforeach
                 </div>
             </main>
@@ -67,8 +118,7 @@
     </div>
 </div>
 
+@extends('layouts.app')
 @include('posts.like')
 @include('posts.comments_ajax')
 @include('posts.share')
-
-@endsection

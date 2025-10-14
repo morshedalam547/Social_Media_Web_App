@@ -45,22 +45,53 @@
                     </div>
                 </div>
 
-                {{-- Card Body --}}
-             
-                <div class="card-body mt-5 pt-5">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h4 class="mb-0">{{ $user->name }}</h4>
-                        <div>
-                            <a href="{{ route('profile.edit') }}" class="btn btn-outline-secondary btn-sm">Edit Profile</a>
-                        </div>
-                    </div>
+             {{-- Card Body --}}
+<div class="card-body mt-5 pt-5">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h4 class="mb-0">{{ $user->name }}</h4>
 
-                    <div class="mb-2">
-                        <span class="badge bg-success me-1"><i class="fas fa-check"></i> Verified</span>
-                        <span class="badge bg-primary"><i class="fas fa-star"></i> Pro Developer</span>
-                        <p class="mt-2">{{ $user->bio ?? 'Hi 👋, I’m a Backend Software Engineer Developer from Bangladesh' }}</p>
-                    </div>
+        <div class="d-flex align-items-center gap-2">
+            {{-- Friends Dropdown --}}
+            @php
+                $friends = $user->friends(); // collection
+            @endphp
+
+            @if($friends->count() > 0)
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button"
+                            id="friendsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Friends ({{ $friends->count() }})
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm p-2"
+                        aria-labelledby="friendsDropdown" style="width: 250px; max-height: 300px; overflow-y: auto;">
+                        @foreach($friends as $friend)
+                            <li class="d-flex align-items-center mb-2">
+                                <a href="{{ route('user.profile', $friend->id) }}" class="d-flex align-items-center text-decoration-none text-dark">
+                                    <img src="{{ $friend->profile_image ? asset('storage/'.$friend->profile_image) : asset('default-avatar.png') }}"
+                                         class="rounded-circle border border-2 me-2" width="40" height="40">
+                                    <span>{{ $friend->name }}</span>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
+            @endif
+
+            {{-- Edit Profile Button --}}
+            @if(auth()->id() === $user->id)
+                <a href="{{ route('profile.edit') }}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-pen"></i> Edit Profile
+                </a>
+            @endif
+        </div>
+    </div>
+
+    <div class="mb-2">
+        <span class="badge bg-success me-1"><i class="fas fa-check"></i> Verified</span>
+        <span class="badge bg-primary"><i class="fas fa-star"></i> Pro Developer</span>
+        <p class="mt-2">{{ $user->bio ?? 'Hi 👋, I’m a Backend Software Engineer Developer from Bangladesh' }}</p>
+    </div>
+</div>
 
             </div>
 

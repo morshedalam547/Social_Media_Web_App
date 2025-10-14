@@ -4,11 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FriendshipController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\UserController;
 
 // Welcome / Public Home
 Route::get('/', [HomeController::class, 'home']);
@@ -60,6 +61,7 @@ Route::middleware('auth')->group(function(){
     Route::post('/friendship/{friendship}/reject', [FriendshipController::class, 'rejectRequest'])->name('friend.reject');
 });
 
+Route::get('/friends', [FriendshipController::class, 'friendsList'])->name('friends.list');
 
 require __DIR__.'/auth.php';
 
