@@ -36,7 +36,7 @@ Route::prefix('posts')->name('posts.')->group(function () {
     Route::post('/', [PostController::class, 'store'])->name('store');
     Route::get('/{post}', [PostController::class, 'show'])->name('show');
     Route::delete('/{post}', [PostController::class, 'destroy']);
-    Route::post('/like', [LikeController::class, 'like'])->name('like');
+    // Route::post('/like', [LikeController::class, 'like'])->name('like');
     Route::post('/{post}/comment', [CommentController::class, 'store'])->name('comment.store');
     });
 
@@ -85,6 +85,14 @@ Route::post('/chat/{friend}/seen', [ChatController::class, 'markAsSeen'])->name(
 
 // Get unread count (for AJAX polling)
 Route::get('/chat/unread-count', [ChatController::class, 'unreadCount'])->name('chat.unreadCount');
+
+use App\Http\Controllers\ReactionController;
+
+Route::post('/posts/{post}/react', [ReactionController::class, 'react'])->name('posts.react');
+
+
+
+
 require __DIR__.'/auth.php';
 
 

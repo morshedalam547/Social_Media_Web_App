@@ -1,31 +1,27 @@
 <?php
 
-namespace App\Http\Controllers;
-use App\Http\Requests\LikeRequest;
-use App\Repositories\LikeRepositoryInterface;
+// namespace App\Http\Controllers;
 
-class LikeController extends Controller
-{
-    /**
-     * Inject LikeRepository dependency
-     */
-    protected $likeRepo;
+// use App\Http\Requests\LikeRequest;
+// use App\Repositories\LikeRepositoryInterface;
 
-    public function __construct(LikeRepositoryInterface $likeRepo)
-    {
-        $this->likeRepo = $likeRepo;
-    }
+// class LikeController extends Controller
+// {
+//     protected $likeRepo;
 
-    // Toggle like/unlike for a post
-    public function like(LikeRequest $request)
-    {
-        $result = $this->likeRepo->toggleLike([
-            'post_id' => $request->post_id,
-            'user_id' => auth()->id(),
-        ]);
+//     public function __construct(LikeRepositoryInterface $likeRepo)
+//     {
+//         $this->likeRepo = $likeRepo;
+//     }
 
-        // Return JSON response (for AJAX)
-        return response()->json($result);
-    }
-}
+//     public function like(LikeRequest $request)
+//     {
+//         $result = $this->likeRepo->toggleLike([
+//             'post_id' => $request->post_id,
+//             'user_id' => auth()->id(),
+//             'emoji_type' => $request->emoji ?? 'like',
+//         ]);
 
+//         return response()->json($result);
+//     }
+// }

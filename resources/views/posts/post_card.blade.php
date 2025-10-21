@@ -20,18 +20,42 @@
       <img src="{{ asset('storage/' . $newPost->image) }}" alt="Post Image" class="img-fluid rounded mb-2" style="max-height:300px;">
     @endif
 
-    {{-- Like & Comment & Share --}}
+    {{-- Like  --}}
     <div class="d-flex justify-content-around border-top pt-2 mt-2 align-items-center">
-      <button class="btn btn-link text-muted like-btn" data-post-id="{{ $newPost->id }}">
-        <i class="fas fa-thumbs-up me-1"></i> Like (<span class="like-count">{{ $newPost->likes->count() }}</span>)
-      </button>
 
-      <button class="btn btn-link text-muted comment-toggle-btn" data-post-id="{{ $newPost->id }}">
-        <i class="fas fa-comment me-1"></i> Comment (<span class="comment-count">{{ $newPost->comments->count() }}</span>)
+    <div class="like-container position-relative d-inline-block">
+        @php
+            $userReaction = $newPost->reactions()->where('user_id', auth()->id())->first();
+        @endphp
+        <button class="btn btn-link text-muted like-btn" data-post-id="{{ $newPost->id }}">
+            <span class="like-emoji">
+                {!! $userReaction ? ($userReaction->type == 'like' ? '👍' : ($userReaction->type == 'love' ? '❤️' : ($userReaction->type == 'haha' ? '😂' : '😮'))) : '👍' !!}
+            </span>
+            <span class="like-text">{{ $userReaction ? ucfirst($userReaction->type) : 'Like' }}</span>
+            (<span class="like-count">{{ $newPost->reactions->count() }}</span>)
+        </button>
+
+        {{-- Emoji Popup --}}
+    <div class="emoji-popup bg-white shadow rounded position-absolute">
+    <span class="emoji" data-emoji="like">👍</span>
+    <span class="emoji" data-emoji="love">❤️</span>
+    <span class="emoji" data-emoji="haha">😂</span>
+    <span class="emoji" data-emoji="wow">😮</span>
+</div>
+
+    </div>
+
+
+
+
+
+
+      <button class="btn btn-link text-muted comment-toggle-btn text-decoration-none " data-post-id="{{ $newPost->id }}">
+        <i class="fas fa-comment me-1 "></i> Comments (<span class="comment-count">{{ $newPost->comments->count() }}</span>)
       </button>
 
       <div class="dropdown">
-        <button class="btn btn-link text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <button class="btn btn-link text-muted dropdown-toggle text-decoration-none " type="button" data-bs-toggle="dropdown">
           <i class="fas fa-share me-1"></i> Share
         </button>
         <ul class="dropdown-menu">
@@ -41,6 +65,7 @@
         </ul>
       </div>
     </div>
+    
 
     {{-- Comments Section --}}
     <div class="comments-section mt-3 d-none" id="commentsSection{{ $newPost->id }}">

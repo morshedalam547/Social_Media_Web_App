@@ -1,31 +1,34 @@
 <?php
 
-namespace App\Repositories;
-use App\Models\Post;
+// namespace App\Repositories;
 
-class LikeRepository implements LikeRepositoryInterface
-{
-    public function toggleLike(array $data)
-    {
-        $post = Post::findOrFail($data['post_id']);
+// use App\Models\Post;
 
-        $like = $post->likes()->where('user_id', $data['user_id'])->first();
+// class LikeRepository implements LikeRepositoryInterface
+// {
+//     public function toggleLike(array $data)
+//     {
+//         $post = Post::findOrFail($data['post_id']);
 
-        if ($like) {
-            $like->delete();
-            $status = 'unliked';
-        } else {
-            $post->likes()->create([
-                'user_id' => $data['user_id'],
-            ]);
-            $status = 'liked';
-        }
+//         $like = $post->likes()->where('user_id', $data['user_id'])->first();
 
-        // Return status + total likes
-        return [
-            'status' => $status,
-            'likes_count' => $post->likes()->count()
-        ];
-    }
+//         if ($like && $like->emoji_type === $data['emoji_type']) {
+//             // একই emoji হলে unlike করবে
+//             $like->delete();
+//             $status = 'unliked';
+//         } else {
+//             // নতুন emoji বা like create/update
+//             $post->likes()->updateOrCreate(
+//                 ['user_id' => $data['user_id']],
+//                 ['emoji_type' => $data['emoji_type']]
+//             );
+//             $status = 'liked';
+//         }
 
-}
+//         return [
+//             'status' => $status,
+//             'likes_count' => $post->likes()->count(),
+//             'emoji_type' => $data['emoji_type']
+//         ];
+//     }
+// }

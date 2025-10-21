@@ -21,7 +21,24 @@
     {{-- Optional: Custom Styles --}}
     @stack('styles')
 
-    
+    {{-- <style>
+.reaction-emoji {
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.reaction-emoji:hover {
+  transform: scale(1.3);
+}
+.reaction-popup {
+  animation: fadeIn 0.2s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style> --}}
+
 </head>
 
 <body>

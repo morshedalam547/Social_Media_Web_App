@@ -22,11 +22,21 @@ class Post extends Model
 
     public function likes()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(Reaction::class);
     }
 
     public function isLikedBy($user)
     {
         return $this->likes->contains('user_id', $user->id);
+
+
     }
+
+
+    public function reactions()
+{
+    return $this->hasMany(Reaction::class);
 }
+
+}
+
